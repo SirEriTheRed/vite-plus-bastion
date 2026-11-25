@@ -20,7 +20,7 @@ to what a real project needs, so you start by writing code instead of assembling
 If the strictness feels heavy, the knobs are in `tsconfig.json` and `eslint.config.js`.
 
 [![build](https://img.shields.io/github/actions/workflow/status/SirEriTheRed/ts-bastion/quality.yml?branch=main)](https://github.com/SirEriTheRed/ts-bastion/actions)
-[![node](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org)
+[![node](https://img.shields.io/badge/node-%3E%3D26-brightgreen)](https://nodejs.org)
 [![license](https://img.shields.io/github/license/SirEriTheRed/ts-bastion)](./LICENSE)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/SirEriTheRed/ts-bastion/badge)](https://scorecard.dev/viewer/?uri=github.com/SirEriTheRed/ts-bastion)
 [![REUSE status](https://api.reuse.software/badge/github.com/SirEriTheRed/ts-bastion)](https://api.reuse.software/info/github.com/SirEriTheRed/ts-bastion)
@@ -89,7 +89,7 @@ in [docs/tooling.md](docs/tooling.md).
 
 ## Prerequisites
 
-- Node.js `>=22` (`.nvmrc` pins the LTS I develop against), npm `>=10`
+- Node.js `>=26` (`.nvmrc` pins the major I develop against), npm `>=10`
 - Git `>=2.40`
 
 ### External tools (manual installation required)

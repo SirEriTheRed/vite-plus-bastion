@@ -9,10 +9,10 @@ if command -v reuse >/dev/null 2>&1; then
   if [ -n "$(staged_new_files)" ]; then
     contributor=$(git config user.name || true)
     if [ -z "$contributor" ]; then
-      contributor="ts-bastion contributors"
+      contributor="vite-plus-bastion contributors"
     fi
     if staged_new_files -z | xargs -0 reuse annotate \
-      --copyright "ts-bastion contributors" \
+      --copyright "vite-plus-bastion contributors" \
       --license MIT \
       --contributor "$contributor" \
       --fallback-dot-license \
