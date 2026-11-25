@@ -18,7 +18,7 @@ bootstrapping their own project from it. The bootstrap notes are marked where th
 
 ## Setup
 
-- Node.js `>=22` (`.nvmrc` pins the LTS I use), npm `>=10`, Git `>=2.40`
+- Node.js `>=26` (`.nvmrc` pins the major I use), npm `>=10`, Git `>=2.40`
 
 ```bash
 git clone https://github.com/SirEriTheRed/ts-bastion.git
