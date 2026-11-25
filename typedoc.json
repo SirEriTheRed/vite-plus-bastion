@@ -1,0 +1,10 @@
+{
+  "entryPoints": ["src/**/*.ts"],
+  "entryPointStrategy": "expand",
+  "out": "docs/api",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "gitRevision": "main"
+}

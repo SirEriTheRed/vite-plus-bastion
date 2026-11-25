@@ -1,0 +1,16 @@
+{
+  "project": ["**/*.ts"],
+  "ignoreDependencies": [
+    "@secretlint/secretlint-rule-preset-recommend",
+    "@semantic-release/github",
+    "@semantic-release/npm"
+  ],
+  "ignoreBinaries": ["actionlint", "dot", "osv-scanner", "reuse", "zizmor"],
+  "rules": {
+    "files": "error",
+    "dependencies": "error",
+    "devDependencies": "error",
+    "unlisted": "error",
+    "exports": "error"
+  }
+}

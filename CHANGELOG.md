@@ -1,0 +1,78 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [1.1.3](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.2...v1.1.3) (2026-10-07)
+
+### Bug Fixes
+
+- **release.yml:** make release-branch publish idempotent ([ec17dbe](https://github.com/SirEriTheRed/ts-bastion/commit/ec17dbe8a2552576057f26f1dee28f17502aa40d))
+
+## [1.1.2](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.1...v1.1.2) (2026-10-07)
+
+### Bug Fixes
+
+- **quality.yml:** stop SPDX dependency submission breaking Dependabot ([a3b2080](https://github.com/SirEriTheRed/ts-bastion/commit/a3b2080fb2f8290cdef3b7efba8fcb22d4bee41c))
+
+## [1.1.1](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.0...v1.1.1) (2026-10-06)
+
+### Bug Fixes
+
+- **quality.yml:** added continue-on-error to still create the SARIF if vulnerabilities are spotted ([17505cf](https://github.com/SirEriTheRed/ts-bastion/commit/17505cf5ca73a8dca2cd4ec4e986e083affa3771))
+- **quality.yml:** fixed options flags ([501f54e](https://github.com/SirEriTheRed/ts-bastion/commit/501f54e6e38a3840cc3dbe86d883f21fca456d7a))
+- **quality.yml:** fixed te osv audit step to omit dev dependencies ([06a9415](https://github.com/SirEriTheRed/ts-bastion/commit/06a9415902b3bcd9729789d6ef6fa7edae115be2))
+- **quality.yml:** fixed the npm audit step to omit dev dependencies ([a16adb8](https://github.com/SirEriTheRed/ts-bastion/commit/a16adb836c77fc264b90c9079e541aef9cd137eb))
+- **quality.yml:** removed omit dev from osv ([1331b7b](https://github.com/SirEriTheRed/ts-bastion/commit/1331b7b4102491afa601e3962aadcec3c765cfc6))
+- **quality.yml:** removed scan source to fix SARIF generation ([ed132b9](https://github.com/SirEriTheRed/ts-bastion/commit/ed132b91633a58f2e3a3b2010be7c9d26d660c0b))
+
+# [1.1.0](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.3...v1.1.0) (2026-09-27)
+
+### Bug Fixes
+
+- **changelog:** keep title and intro at top of changelog ([74fbb29](https://github.com/SirEriTheRed/ts-bastion/commit/74fbb298918b6d7b974992ae65b34082a727bccc))
+
+### Features
+
+- **release:** publish github releases via semantic-release ([427b83b](https://github.com/SirEriTheRed/ts-bastion/commit/427b83bee11949147bd366c0c75796969cf06f33))
+
+## [1.0.3](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.2...v1.0.3) (2026-09-26)
+
+### Bug Fixes
+
+- align all CodeQL actions to v4.38.1 ([1c175d6](https://github.com/SirEriTheRed/ts-bastion/commit/1c175d6c11265a22b89f8ea98015bf094c2d923b))
+
+## [1.0.2](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.1...v1.0.2) (2026-09-26)
+
+### Bug Fixes
+
+- **ci:** align github/codeql-action steps on v4.38.1 ([d60b629](https://github.com/SirEriTheRed/ts-bastion/commit/d60b6292df0fe487f5dd3efd24a0c8feaeecc2d1))
+
+## [1.0.1](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.0...v1.0.1) (2026-09-26)
+
+### Bug Fixes
+
+- **ci:** dispatch codeql for release branches ([3b22d5e](https://github.com/SirEriTheRed/ts-bastion/commit/3b22d5ea3908874aa043dc24cdcf819fe57f42c1))
+
+## [1.0.0](https://github.com/SirEriTheRed/ts-bastion/tree/v1.0.0) (2026-09-26)
+
+### Bug Fixes
+
+- add missing license header to reuse backfill script ([f85cff0](https://github.com/SirEriTheRed/ts-bastion/commit/f85cff0c09d853de9227e1e16f46e30e927a00f3))
+- **ci:** correct pinned hash for editorconfig-checker action ([f486a90](https://github.com/SirEriTheRed/ts-bastion/commit/f486a90a5bf8a3f780deb43237a9d76d32c66dbe))
+- **ci:** correct pinned hash for spdx-dependency-submission-action ([7eef223](https://github.com/SirEriTheRed/ts-bastion/commit/7eef2237f2657c320f8864d304dfa11dd057f867))
+- **ci:** export GITHUB_REF in shell to reach semantic-release ([de3bf68](https://github.com/SirEriTheRed/ts-bastion/commit/de3bf68593aa16cee70ca4d6f174a695c42dec1b))
+- **ci:** make semantic-release actually publish releases ([c0a5364](https://github.com/SirEriTheRed/ts-bastion/commit/c0a536494ab4cce7bd8a086aed01e7265bb16ab7))
+- **ci:** pin github/codeql-action to sha in codeql and scorecard workflows ([798252b](https://github.com/SirEriTheRed/ts-bastion/commit/798252b6c128dcb9b0a0ba5e095b3b61267ef21b))
+- **ci:** unblock ls-lint and cspell gates ([6232774](https://github.com/SirEriTheRed/ts-bastion/commit/62327748d1f05fa588c64a0a23b9d6c6a94b2af5))
+- **ci:** unignore vscode license sidecars ([f5762c2](https://github.com/SirEriTheRed/ts-bastion/commit/f5762c26a2a1cfff21f0f868d0feaad2f47a2439))
+
+### Features
+
+- add Scorecard workflow for supply-chain security ([fb4a53d](https://github.com/SirEriTheRed/ts-bastion/commit/fb4a53d1888df40902afd136547fc1174bdcd86c))
+- added REUSE and a license header to every files ([1d93684](https://github.com/SirEriTheRed/ts-bastion/commit/1d93684aa489722cd8b2cf28c9d157bacf138110))
+- added workflow_dispatch: to scorecard action to be able to run it ([c150dee](https://github.com/SirEriTheRed/ts-bastion/commit/c150deeedd9de1d129ad26889782fff758fee948))
+- initial commit of the template ([f57cfe4](https://github.com/SirEriTheRed/ts-bastion/commit/f57cfe46f0909493bad847e31b4e36603dde5a0b))
+
+### Reverts
+
+- Revert "chore(release.yml): modified workflow to use GitHub's dedicated self-repo syntax $/ instead of ./" because $/ is not yet supported by ActionLint ([73a4a01](https://github.com/SirEriTheRed/ts-bastion/commit/73a4a01ecb571fcf8d2b5928f5d2d2cb9ead3c93))

@@ -1,0 +1,70 @@
+# SPDX-FileCopyrightText: 2026 ts-bastion contributors
+# SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
+# osv-scanner suppressions — https://google.github.io/osv-scanner/configuration/
+#
+# Auto-applied: this file sits next to package-lock.json, so it applies to that
+# lockfile (per-directory discovery — it does NOT propagate to child directories).
+#
+# Every entry is an advisory on a DEV-ONLY package; the production tree is empty
+# (`npm audit --omit=dev` is clean), so none of them reach runtime consumers.
+#
+# Entries are keyed by vulnerability ID rather than by package, so a NEW advisory
+# in any of these packages still fails the local `npm run osv` scan and shows up
+# in SARIF and must be triaged deliberately. The CI osv step itself is
+# non-blocking (`continue-on-error`) so a single finding never gates a merge;
+# the prod/critical `npm audit` steps in the Audit job remain blocking.
+# Delete an entry once its package is no longer flagged — osv-scanner prints
+# "unused ignores" for stale entries, and TODO.md tracks pending upstream fixes.
+#
+# Why these cannot be fixed here:
+#   * braces, http-cache-semantics — advisory range covers every published
+#     release (FIXED VERSION = "--"); no fixed version exists upstream.
+#     (No longer flagged as of npm 11.21.1's bundled tree — entries removed.)
+#   * brace-expansion, ip-address, postcss-selector-parser, glob, minimatch,
+#     undici — a fix exists upstream, but the flagged copy is the one bundled
+#     inside node_modules/npm (`inBundle: true`); a root `overrides` entry or
+#     `npm update <pkg>` cannot reach a bundled subtree. For glob/minimatch the
+#     fix is also a semver-major jump of dev tooling. (brace-expansion and
+#     postcss-selector-parser are no longer flagged — entries removed.)
+#   * katex — fix exists only in 0.18.2, but micromark-extension-math@3.1.0
+#     (latest) pins katex ^0.16.0 and @eslint/markdown@8.0.3 is current.
+#     Upgrade path: an npm `overrides` entry once the parent widens its range.
+
+[[IgnoredVulns]]
+id = "GHSA-238p-pmpm-9mq7"
+reason = "katex 0.16.47: only fixed in 0.18.2, but micromark-extension-math@3.1.0 (latest) pins katex ^0.16.0. Dev-only markdown math linting (CVSS 2.1)."
+
+[[IgnoredVulns]]
+id = "GHSA-xjj6-f33q-929c"
+reason = "undici 6.29.0 is bundled inside node_modules/npm (inBundle); fixed only in 6.29.1, which no published npm release (11.21.1 or 12.2.1) ships yet. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-2m5v-pch6-74hx"
+reason = "undici 6.29.0 is bundled inside node_modules/npm (inBundle); fixed only in 6.29.1, which no published npm release (11.21.1 or 12.2.1) ships yet. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-qrxm-fqhp-jwvm"
+reason = "undici 6.29.0 is bundled inside node_modules/npm (inBundle); fixed only in 6.29.1, which no published npm release (11.21.1 or 12.2.1) ships yet. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-4qv8-2p9j-2685"
+reason = "undici 6.29.0 is bundled inside node_modules/npm (inBundle); fixed only in 6.29.1, which no published npm release (11.21.1 or 12.2.1) ships yet. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-9fm3-97px-rjf6"
+reason = "undici 6.29.0 is bundled inside node_modules/npm (inBundle); fixed only in 6.29.1, which no published npm release (11.21.1 or 12.2.1) ships yet. Advisory affects WebSocket paths npm does not use. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-rxp7-6hxx-x8q5"
+reason = "ip-address 10.7.2 is bundled inside node_modules/npm (inBundle); fixed only in 10.7.4, unreachable in a bundled subtree. Dev-only via socks-proxy-agent, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-3g3m-2fjr-6pw4"
+reason = "glob 13.0.6 is bundled inside node_modules/npm (inBundle); fix requires semver-major 14.0.2 and cannot reach a bundled subtree. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-g3hv-75wg-m249"
+reason = "minimatch: 10.2.5 bundled inside node_modules/npm, 10.2.6 via eslint tooling, 3.1.5 via commitizen/license-checker; fix requires semver-major 11.0.1 across dev tooling. Dev-only, see TODO.md."
