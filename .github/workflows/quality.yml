@@ -53,7 +53,7 @@ jobs:
       - run: pnpm run editorconfig
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - run: pnpm run package:sort -- --check
+      - run: pnpm run package:sort --check
       - run: pnpm run type-check
       - run: pnpm run type-check:tests
       - run: pnpm run test:coverage
