@@ -1,21 +1,21 @@
 {
-  "name": "@erithered/ts-bastion",
-  "version": "1.1.3",
+  "name": "@erithered/vite-plus-bastion",
+  "version": "0.0.1",
   "private": true,
-  "description": "A typescript project template centered around code quality and CI/CD",
+  "description": "A typescript fullstack project template centered around code quality and CI/CD",
   "keywords": [
     "typescript",
     "template",
     "quality",
     "ci-cd"
   ],
-  "homepage": "https://github.com/SirEriTheRed/ts-bastion#readme",
+  "homepage": "https://github.com/SirEriTheRed/vite-plus-bastion#readme",
   "bugs": {
-    "url": "https://github.com/SirEriTheRed/ts-bastion/issues"
+    "url": "https://github.com/SirEriTheRed/vite-plus-bastion/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SirEriTheRed/ts-bastion.git"
+    "url": "https://github.com/SirEriTheRed/vite-plus-bastion.git"
   },
   "license": "MIT",
   "author": "erithered",
