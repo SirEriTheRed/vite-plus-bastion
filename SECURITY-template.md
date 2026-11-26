@@ -77,13 +77,12 @@ altering data that is not yours and do not perform denial-of-service testing.
 This template ships with automated checks. See [`CONTRIBUTING.md`](./CONTRIBUTING.md#security)
 for details:
 
-- `npm audit --omit=dev --audit-level=high` (blocking in CI `audit` job; production dependencies
-  only; full-tree `npm audit --audit-level=critical` also runs, reporting all findings)
-- `osv-scanner`: locally `npm run osv` / `npm run osv:html` → `reports/osv-report.html`; in CI
+- `pnpm audit --prod --audit-level high` (blocking in CI `audit` job; production dependencies
+  only; full-tree `pnpm audit --audit-level critical` also runs, reporting all findings)
+- `osv-scanner`: locally `pnpm run osv` / `pnpm run osv:html` → `reports/osv-report.html`; in CI
   via `google/osv-scanner-action@v2` → `reports/osv.sarif` → GitHub Code Scanning; unfixable
   dev-only findings suppressed by ID in `osv-scanner.toml`
-- `secretlint`: `npm run secretlint` / `npm run secretlint:mask` plus lint-staged on every commit
-- `lockfile-lint`: `npm run lockfile-lint` validates `package-lock.json`
+- `secretlint`: `pnpm run secretlint` / `pnpm run secretlint:mask` plus lint-staged on every commit
 - `zizmor`: optional `zizmor .` for GitHub Actions hardening (`pipx` / `cargo` / `brew`)
 
 ## Acknowledgments

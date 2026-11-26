@@ -47,13 +47,14 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '26'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build
-      - run: npm run sbom:all
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - run: pnpm run sbom:all
       - name: Generate build provenance (Sigstore)
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
@@ -68,7 +69,7 @@ jobs:
         id: sr
         run: |
           set +e
-          npx semantic-release --dry-run > sr.log 2>&1
+          pnpm exec semantic-release --dry-run > sr.log 2>&1
           STATUS=$?
           set -e
           cat sr.log
@@ -115,14 +116,14 @@ jobs:
           fi
           # Regenerate API docs on the release branch (the per-PR docs job was
           # removed); @semantic-release/git ships them with the release commit.
-          npm run docs
-          npx prettier --write docs/** --log-level silent
+          pnpm run docs
+          pnpm exec prettier --write docs/** --log-level silent
           # GitHub ignores workflow-level overrides of the default GITHUB_* variables,
           # so env-ci would otherwise resolve ciBranch to the triggering branch (main)
           # and semantic-release would exit without releasing. Set it in the shell,
           # which is not subject to that restriction.
           export GITHUB_REF="refs/heads/$BRANCH"
-          npx semantic-release --branches "$BRANCH"
+          pnpm exec semantic-release --branches "$BRANCH"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -12,19 +12,19 @@ SPDX-License-Identifier: MIT
 - `.github/workflows/quality.yml` runs on `workflow_call` (from `release.yml`), push to
   `develop`, and pull_request to `main`. Jobs:
   - `check` (required): REUSE compliance (`fsfe/reuse-action@v6`, SHA-pinned, right after
-    checkout) → `lockfile-lint` → `lint` → `lint:package` → `ls-lint` → `lint:spell` →
-    `secretlint` → `format:check` → `npm run editorconfig` (devDependency binary, not the
+    checkout) → `lint` → `lint:package` → `ls-lint` → `lint:spell` →
+    `secretlint` → `format:check` → `pnpm run editorconfig` (devDependency binary, not the
     GitHub action) → `package:sort --check` → `type-check` → `type-check:tests` →
     `test:coverage` → `knip` → `depcruise`
   - `commitlint` (required): validates the commit range (`--from/--to` on PR, `--last` on
     push) with `commitlint.config.cjs`
-  - `audit`: `npm audit --omit=dev --audit-level=high` (blocking, production dependencies)
-    plus full-tree `npm audit --audit-level=critical` (reports all findings, blocks on
+  - `audit`: `pnpm audit --prod --audit-level high` (blocking, production dependencies)
+    plus full-tree `pnpm audit --audit-level critical` (reports all findings, blocks on
     Critical) → `google/osv-scanner-action` SARIF (`continue-on-error: true`, so it never
     gates a merge; known unfixable dev-only findings are suppressed by ID in
     `osv-scanner.toml`, with pending upstream fixes tracked in `TODO.md`) → Security >
     Code scanning + `sbom:all` artifacts + depcruiser HTML + OSV SARIF artifacts +
-    `npm audit signatures` (informational, `continue-on-error: true`, artifact
+    `pnpm audit signatures` (informational, `continue-on-error: true`, artifact
     `reports/audit-signatures.txt`, not in required checks)
 - `.github/workflows/actionlint.yml`: `rhysd/actionlint` v1.7.12 (download script) plus
   shellcheck (`-pyflakes=""`), blocking on push (main/develop), pull_request (main),
@@ -39,10 +39,10 @@ SPDX-License-Identifier: MIT
 - `.github/workflows/scorecard.yml`: OpenSSF Scorecard (`ossf/scorecard-action` v2.4.4) →
   SARIF → Security > Code scanning; triggers on `branch_protection_rule`, push (main),
   schedule `26 7 * * 2`, and `workflow_dispatch`
-- `.github/workflows/release.yml`: after quality passes, runs `npm run build` +
-  `npm run docs` (docs regenerate at release time and are committed with the release via
-  `@semantic-release/git`; the per-PR docs job was removed) + `npm run sbom:all` +
-  attestations (Sigstore via `actions/attest-build-provenance@v4.2.2`) + `npm run release`
+- `.github/workflows/release.yml`: after quality passes, runs `pnpm run build` +
+  `pnpm run docs` (docs regenerate at release time and are committed with the release via
+  `@semantic-release/git`; the per-PR docs job was removed) + `pnpm run sbom:all` +
+  attestations (Sigstore via `actions/attest-build-provenance@v4.2.2`) + `pnpm run release`
   (semantic-release) on push to main. The workflow does not open the `release/vX.Y.Z` PR
   itself: a PR created with `GITHUB_TOKEN` triggers no `pull_request` workflows, so its
   required checks would never report. Instead it pushes the branch, prints a one-click
@@ -52,61 +52,60 @@ SPDX-License-Identifier: MIT
 
 ## Commands
 
-| Command                         | Action                                                                                                                               |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `npm run build`                 | `tsc`, compiles `src/` → `dist/`                                                                                                     |
-| `npm run clean`                 | `rm -rf dist`, removes build output                                                                                                  |
-| `npm run cleanup`               | `rm -rf dist reports .nyc_output tmp temp .cache *.tsbuildinfo`                                                                      |
-| `npm run check`                 | aggregate local gate: lint → lint:package → type-check(+tests) → format:check → editorconfig → ls-lint → knip → depcruise            |
-| `npm run dev`                   | `tsc --watch`                                                                                                                        |
-| `npm run type-check`            | `tsc --noEmit` (source only)                                                                                                         |
-| `npm run type-check:tests`      | `tsc --noEmit -p tsconfig.test.json` (source + tests)                                                                                |
-| `npm run lint`                  | `eslint .` (flat config, strict type-checked)                                                                                        |
-| `npm run lint:fix`              | `eslint . --fix`                                                                                                                     |
-| `npm run lint:package`          | `npmPkgJsonLint .`, `package.json` convention lint                                                                                   |
-| `npm run format`                | `prettier --write .`                                                                                                                 |
-| `npm run format:check`          | `prettier --check .`                                                                                                                 |
-| `npm run editorconfig`          | `editorconfig-checker`, whitespace, EOL, charset rules                                                                               |
-| `npm run editorconfig:docker`   | `docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker`                                                               |
-| `npm run lint:spell`            | `cspell lint "**/*.{ts,md,json}"`, spell-check source and docs                                                                       |
-| `npm run lockfile-lint`         | `lockfile-lint --type npm --path package-lock.json --allowed-hosts npm --validate-https --validate-integrity --empty-hostname false` |
-| `npm run ls-lint`               | `ls-lint`, filename/dir linter (`kebab-case`, `.ls-lint.yml`)                                                                        |
-| `npm run package:sort`          | `sort-package-json`, normalizes `package.json` (`--check` in CI)                                                                     |
-| `npm run licenses`              | `license-checker`, lists licenses of npm dependencies                                                                                |
-| `npm run secretlint`            | `secretlint "**/*"`, scans the repo for hardcoded secrets                                                                            |
-| `npm run secretlint:mask`       | `secretlint --maskSecrets "**/*"`, same, secrets masked in output                                                                    |
-| `npm test`                      | `vitest run`, fast without coverage (80% thresholds via `npm run test:coverage`)                                                     |
-| `npm run test:coverage`         | `vitest run --coverage` → `reports/coverage/` (80% thresholds)                                                                       |
-| `npm run test:coverage:watch`   | `vitest --coverage`, watch with coverage                                                                                             |
-| `npm run test:watch`            | `vitest`, watch mode                                                                                                                 |
-| `npm run test:ui`               | `vitest --ui`, browser UI                                                                                                            |
-| `npm run osv`                   | `osv-scanner scan source -r .`, blocking (exit 1 on vuln)                                                                            |
-| `npm run osv:html`              | `osv-scanner --format html --output-file reports/osv-report.html`, blocking + HTML                                                   |
-| `npm run osv:html:force`        | same as `osv:html` but non-blocking (`\|\| true`) for local use                                                                      |
-| `npm run sbom`                  | `npm sbom --sbom-format spdx --package-lock-only` → `reports/sbom/sbom.spdx.json` (GitHub)                                           |
-| `npm run sbom:cyclonedx`        | `npm sbom --sbom-format cyclonedx --package-lock-only` → `reports/sbom/sbom.cyclonedx.json`                                          |
-| `npm run sbom:all`              | `npm run sbom && npm run sbom:cyclonedx`                                                                                             |
-| `npm run zizmor`                | `zizmor .`, GitHub Actions audit (requires `zizmor`); CI via `zizmorcore/zizmor-action@v0.6.4` → SARIF → Code scanning               |
-| `npm run zizmor:sarif`          | `zizmor --format sarif . > reports/zizmor.sarif`, local SARIF preview (non-blocking)                                                 |
-| `npm run actionlint`            | `actionlint -color`, lints workflow files + shellcheck (blocking)                                                                    |
-| `npm run actionlint:docker`     | `docker run --rm -v $(pwd):/repo --workdir /repo rhysd/actionlint:1.7.12 -color`, same sans Go via Docker                            |
-| `npm run codeql`                | `bash scripts/codeql-scan.sh`, runs CodeQL queries locally                                                                           |
-| `npm run reuse`                 | `reuse lint`, REUSE/SPDX compliance (requires `reuse`); CI via `fsfe/reuse-action@v6` (blocking)                                     |
-| `npm run reuse:annotate`        | `bash scripts/reuse-annotate.sh`, adds missing SPDX headers; review `git diff` before committing                                     |
-| `npm run audit:signatures`      | `npm audit signatures`, strict Sigstore verify (exits non-zero on missing/invalid)                                                   |
-| `npm run audit:signatures:warn` | `npm audit signatures \|\| true`, non-blocking wrapper for CI (always exit 0)                                                        |
-| `npm run depcruise`             | `depcruise src --output-type err-long`, dependency rules (blocking)                                                                  |
-| `npm run depcruise:html`        | `depcruise src --output-type err-html` → `reports/depcruiser/index.html`                                                             |
-| `npm run depcruise:graph`       | `depcruise src --output-type dot \| dot -T svg > dependency-graph.svg` (requires Graphviz)                                           |
-| `npm run docs`                  | `rm -rf docs/api && typedoc` → `docs/api/*.md` (markdown, committed; hand-written guides live next to it in `docs/`)                 |
-| `npm run docs:html`             | `typedoc --options typedoc.html.json` → `reports/docs/index.html` (HTML, gitignored)                                                 |
-| `npm run docs:watch`            | `typedoc --watch`                                                                                                                    |
-| `npm run knip`                  | `knip`, dead-code analysis                                                                                                           |
-| `npm run analyze`               | alias for `knip`                                                                                                                     |
-| `npm run commit`                | `cz`, commitizen interactive conventional-commit prompt                                                                              |
-| `npm run prepare`               | `husky`, installs git hooks (runs automatically on `npm install`)                                                                    |
-| `npm run release`               | `semantic-release`                                                                                                                   |
-| `npm run release:dry`           | `semantic-release --dry-run`                                                                                                         |
+| Command                          | Action                                                                                                                    |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm run build`                 | `tsc`, compiles `src/` → `dist/`                                                                                          |
+| `pnpm run clean`                 | `rm -rf dist`, removes build output                                                                                       |
+| `pnpm run cleanup`               | `rm -rf dist reports .nyc_output tmp temp .cache *.tsbuildinfo`                                                           |
+| `pnpm run check`                 | aggregate local gate: lint → lint:package → type-check(+tests) → format:check → editorconfig → ls-lint → knip → depcruise |
+| `pnpm run dev`                   | `tsc --watch`                                                                                                             |
+| `pnpm run type-check`            | `tsc --noEmit` (source only)                                                                                              |
+| `pnpm run type-check:tests`      | `tsc --noEmit -p tsconfig.test.json` (source + tests)                                                                     |
+| `pnpm run lint`                  | `eslint .` (flat config, strict type-checked)                                                                             |
+| `pnpm run lint:fix`              | `eslint . --fix`                                                                                                          |
+| `pnpm run lint:package`          | `npmPkgJsonLint .`, `package.json` convention lint                                                                        |
+| `pnpm run format`                | `prettier --write .`                                                                                                      |
+| `pnpm run format:check`          | `prettier --check .`                                                                                                      |
+| `pnpm run editorconfig`          | `editorconfig-checker`, whitespace, EOL, charset rules                                                                    |
+| `pnpm run editorconfig:docker`   | `docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker`                                                    |
+| `pnpm run lint:spell`            | `cspell lint "**/*.{ts,md,json}"`, spell-check source and docs                                                            |
+| `pnpm run ls-lint`               | `ls-lint`, filename/dir linter (`kebab-case`, `.ls-lint.yml`)                                                             |
+| `pnpm run package:sort`          | `sort-package-json`, normalizes `package.json` (`--check` in CI)                                                          |
+| `pnpm run licenses`              | `license-checker`, lists licenses of npm dependencies                                                                     |
+| `pnpm run secretlint`            | `secretlint "**/*"`, scans the repo for hardcoded secrets                                                                 |
+| `pnpm run secretlint:mask`       | `secretlint --maskSecrets "**/*"`, same, secrets masked in output                                                         |
+| `pnpm test`                      | `vitest run`, fast without coverage (80% thresholds via `pnpm run test:coverage`)                                         |
+| `pnpm run test:coverage`         | `vitest run --coverage` → `reports/coverage/` (80% thresholds)                                                            |
+| `pnpm run test:coverage:watch`   | `vitest --coverage`, watch with coverage                                                                                  |
+| `pnpm run test:watch`            | `vitest`, watch mode                                                                                                      |
+| `pnpm run test:ui`               | `vitest --ui`, browser UI                                                                                                 |
+| `pnpm run osv`                   | `osv-scanner scan source -r .`, blocking (exit 1 on vuln)                                                                 |
+| `pnpm run osv:html`              | `osv-scanner --format html --output-file reports/osv-report.html`, blocking + HTML                                        |
+| `pnpm run osv:html:force`        | same as `osv:html` but non-blocking (`\|\| true`) for local use                                                           |
+| `pnpm run sbom`                  | `pnpm sbom --sbom-format spdx --lockfile-only` → `reports/sbom/sbom.spdx.json` (GitHub)                                   |
+| `pnpm run sbom:cyclonedx`        | `pnpm sbom --sbom-format cyclonedx --lockfile-only` → `reports/sbom/sbom.cyclonedx.json`                                  |
+| `pnpm run sbom:all`              | `pnpm run sbom && pnpm run sbom:cyclonedx`                                                                                |
+| `pnpm run zizmor`                | `zizmor .`, GitHub Actions audit (requires `zizmor`); CI via `zizmorcore/zizmor-action@v0.6.4` → SARIF → Code scanning    |
+| `pnpm run zizmor:sarif`          | `zizmor --format sarif . > reports/zizmor.sarif`, local SARIF preview (non-blocking)                                      |
+| `pnpm run actionlint`            | `actionlint -color`, lints workflow files + shellcheck (blocking)                                                         |
+| `pnpm run actionlint:docker`     | `docker run --rm -v $(pwd):/repo --workdir /repo rhysd/actionlint:1.7.12 -color`, same sans Go via Docker                 |
+| `pnpm run codeql`                | `bash scripts/codeql-scan.sh`, runs CodeQL queries locally                                                                |
+| `pnpm run reuse`                 | `reuse lint`, REUSE/SPDX compliance (requires `reuse`); CI via `fsfe/reuse-action@v6` (blocking)                          |
+| `pnpm run reuse:annotate`        | `bash scripts/reuse-annotate.sh`, adds missing SPDX headers; review `git diff` before committing                          |
+| `pnpm run audit:signatures`      | `pnpm audit signatures`, strict Sigstore verify (exits non-zero on missing/invalid)                                       |
+| `pnpm run audit:signatures:warn` | `pnpm audit signatures \|\| true`, non-blocking wrapper for CI (always exit 0)                                            |
+| `pnpm run depcruise`             | `depcruise src --output-type err-long`, dependency rules (blocking)                                                       |
+| `pnpm run depcruise:html`        | `depcruise src --output-type err-html` → `reports/depcruiser/index.html`                                                  |
+| `pnpm run depcruise:graph`       | `depcruise src --output-type dot \| dot -T svg > dependency-graph.svg` (requires Graphviz)                                |
+| `pnpm run docs`                  | `rm -rf docs/api && typedoc` → `docs/api/*.md` (markdown, committed; hand-written guides live next to it in `docs/`)      |
+| `pnpm run docs:html`             | `typedoc --options typedoc.html.json` → `reports/docs/index.html` (HTML, gitignored)                                      |
+| `pnpm run docs:watch`            | `typedoc --watch`                                                                                                         |
+| `pnpm run knip`                  | `knip`, dead-code analysis                                                                                                |
+| `pnpm run analyze`               | alias for `knip`                                                                                                          |
+| `pnpm run commit`                | `cz`, commitizen interactive conventional-commit prompt                                                                   |
+| `pnpm run prepare`               | `husky`, installs git hooks (runs automatically on `pnpm install`)                                                        |
+| `pnpm run release`               | `semantic-release`                                                                                                        |
+| `pnpm run release:dry`           | `semantic-release --dry-run`                                                                                              |
 
 ### External tools (not in `package.json`)
 
@@ -128,23 +127,23 @@ binaries: `actionlint`, `dot`, `osv-scanner`, `reuse`, `zizmor`.
     installed locally or when annotation fails. CI (`fsfe/reuse-action@v6`) is the real
     gate.
   - lint-staged: `eslint --fix` + `prettier --write` on staged `*.{js,ts}` and `*.md`,
-    `prettier --write` on `*.json`, `npm run type-check` on `*.ts`,
-    `npm run lint:package` + `npm run package:sort` on `package.json`,
-    `npm run lockfile-lint` on `package-lock.json`, `secretlint` on every staged file, and
+    `prettier --write` on `*.json`, `pnpm run type-check` on `*.ts`,
+    `pnpm run lint:package` + `pnpm run package:sort` on `package.json`,
+    `secretlint` on every staged file, and
     `actionlint` on `.github/workflows/*.{yml,yaml}` when the binary is installed.
-  - `npx --no ls-lint || true`, a non-blocking filename check.
+  - `pnpm exec ls-lint || true`, a non-blocking filename check.
   - Regenerates `dependency-graph.svg` when `src/**` or `.dependency-cruiser.cjs` is
     staged and Graphviz `dot` is available.
 - Commit messages: conventional commits enforced via commitlint
-  (`@commitlint/config-conventional`); `npm run commit` opens the commitizen prompt.
+  (`@commitlint/config-conventional`); `pnpm run commit` opens the commitizen prompt.
 - Licensing (REUSE): every tracked file carries an SPDX header. `REUSE.toml` declares
   coverage for `docs/**` and for the trivial dotfiles (`.nvmrc`, `.gitignore`,
   `.gitattributes`, `.editorconfig`, `.npmrc`, `.prettierignore`, `.ls-lint.yml`,
-  `package-lock.json`); JSON and other comment-less files use `*.license` sidecars, and
-  `LICENSES/MIT.txt` holds the license text. Verify with `npm run reuse`; backfill missing
-  headers with `npm run reuse:annotate`.
-- Recommended local order: `npm run lint` → `npm run type-check` → `npm run format:check`
-  → `npm run ls-lint` → `npm run reuse` → tests.
+  `pnpm-lock.yaml`); JSON and other comment-less files use `*.license` sidecars, and
+  `LICENSES/MIT.txt` holds the license text. Verify with `pnpm run reuse`; backfill missing
+  headers with `pnpm run reuse:annotate`.
+- Recommended local order: `pnpm run lint` → `pnpm run type-check` → `pnpm run format:check`
+  → `pnpm run ls-lint` → `pnpm run reuse` → tests.
 
 ## Architecture
 
@@ -156,13 +155,13 @@ binaries: `actionlint`, `dot`, `osv-scanner`, `reuse`, `zizmor`.
 
 ## Orphaned / stale
 
-- `dist/` is build output (regenerate with `npm run build`, remove with `npm run clean`).
+- `dist/` is build output (regenerate with `pnpm run build`, remove with `pnpm run clean`).
   It goes stale after `src/` changes.
-- `docs/api/` is generated by TypeDoc markdown (`npm run docs`); it is committed and must
+- `docs/api/` is generated by TypeDoc markdown (`pnpm run docs`); it is committed and must
   never be hand-edited. Hand-written guides live in `docs/` (see `docs/tooling.md`).
-  `reports/docs/` is the HTML variant (`npm run docs:html`), gitignored.
+  `reports/docs/` is the HTML variant (`pnpm run docs:html`), gitignored.
 - `reports/` is the single gitignored folder for all HTML/sites not committed (coverage,
-  sbom, osv-report.html, docs html, depcruiser); `npm run cleanup` removes it.
+  sbom, osv-report.html, docs html, depcruiser); `pnpm run cleanup` removes it.
   `dependency-graph.svg` stays at the root (referenced in README), and `reports/sbom/`
   contains `sbom.spdx.json` (GitHub) plus `sbom.cyclonedx.json`.
 - `coverage/` is obsolete (it moved to `reports/coverage/`) but stays in `.gitignore` for
@@ -198,7 +197,7 @@ binaries: `actionlint`, `dot`, `osv-scanner`, `reuse`, `zizmor`.
   property.
 - `noUncheckedIndexedAccess: true`: indexed access returns `T | undefined`.
 - Test files stay out of the main `tsconfig.json`; use `tsconfig.test.json` for test
-  type-checking (`npm run type-check:tests`).
+  type-checking (`pnpm run type-check:tests`).
 - `tsconfig.test.json` adds `vitest/globals` types and disables unused-variable errors
   for test convenience.
 
@@ -208,4 +207,4 @@ binaries: `actionlint`, `dot`, `osv-scanner`, `reuse`, `zizmor`.
   imports).
 - Coverage thresholds are 80% for lines, functions, branches, and statements.
 - The smoke test `tests/hello.test.ts` covers `src/index.ts` (`logHello()`).
-- Run the suite with `npm test` or `npx vitest run`.
+- Run the suite with `pnpm test` or `pnpm exec vitest run`.

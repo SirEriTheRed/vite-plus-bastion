@@ -23,7 +23,7 @@ path = [
   ".npmrc",
   ".nvmrc",
   ".prettierignore",
-  "package-lock.json",
+  "pnpm-lock.yaml",
 ]
 SPDX-FileCopyrightText = "2026 ts-bastion contributors"
 SPDX-License-Identifier = "MIT"

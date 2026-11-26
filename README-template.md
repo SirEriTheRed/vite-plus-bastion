@@ -149,13 +149,13 @@ _[legend]_
 > installs them automatically where needed, but locally you need them for certain
 > commands.
 
-| Tool             | Role in this template                                                                                     | Install                                                                                                                   | When needed?                                           |
-| ---------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Go `>=1.21`      | Required to install `osv-scanner` via `go install` (`audit` job of `quality.yml` + `npm run osv` locally) | https://go.dev/dl/ or `brew install go` / `apt install golang`                                                            | `npm run osv`, `npm run osv:html`                      |
-| osv-scanner      | Vulnerability scanning (`npm run osv`), Go binary `github.com/google/osv-scanner/v2`                      | `go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest` then `export PATH=$PATH:$(go env GOPATH)/bin`        | any `npm run osv*` locally; in CI via `setup-go`       |
-| zizmor `>=1.30`  | GitHub Actions security audit (`zizmor .`), not in CI by default                                          | `cargo install zizmor` · `pipx install zizmor` · `brew install zizmor` · binary at `github.com/woodruffw/zizmor/releases` | local audit `zizmor .` / `zizmor --persona pedantic .` |
-| Graphviz (`dot`) | Generates `dependency-graph.svg` (`npm run depcruise:graph`)                                              | `brew install graphviz` / `apt install graphviz` / https://graphviz.org/download/                                         | `npm run depcruise:graph` only                         |
-| Git `>=2.40`     | Husky hooks, `semantic-release`                                                                           | https://git-scm.com/downloads                                                                                             | always                                                 |
+| Tool             | Role in this template                                                                                      | Install                                                                                                                   | When needed?                                           |
+| ---------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Go `>=1.21`      | Required to install `osv-scanner` via `go install` (`audit` job of `quality.yml` + `pnpm run osv` locally) | https://go.dev/dl/ or `brew install go` / `apt install golang`                                                            | `pnpm run osv`, `pnpm run osv:html`                    |
+| osv-scanner      | Vulnerability scanning (`pnpm run osv`), Go binary `github.com/google/osv-scanner/v2`                      | `go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest` then `export PATH=$PATH:$(go env GOPATH)/bin`        | any `pnpm run osv*` locally; in CI via `setup-go`      |
+| zizmor `>=1.30`  | GitHub Actions security audit (`zizmor .`), not in CI by default                                           | `cargo install zizmor` · `pipx install zizmor` · `brew install zizmor` · binary at `github.com/woodruffw/zizmor/releases` | local audit `zizmor .` / `zizmor --persona pedantic .` |
+| Graphviz (`dot`) | Generates `dependency-graph.svg` (`pnpm run depcruise:graph`)                                              | `brew install graphviz` / `apt install graphviz` / https://graphviz.org/download/                                         | `pnpm run depcruise:graph` only                        |
+| Git `>=2.40`     | Husky hooks, `semantic-release`                                                                            | https://git-scm.com/downloads                                                                                             | always                                                 |
 
 > Verify locally with `go version && osv-scanner --version && zizmor --version && dot -V`
 
@@ -180,14 +180,14 @@ _[legend]_
 Rules defined in [`.dependency-cruiser.cjs`](./.dependency-cruiser.cjs) (`no-circular`, `no-orphans`, `no-non-package-json`, `not-to-dev-dep`, …). Check with:
 
 ```bash
-npm run depcruise
+pnpm run depcruise
 ```
 
 Graph generated with `dependency-cruiser` + Graphviz (`dot`):
 
 ```bash
-npm run depcruise:graph
-# or: npx depcruise src --include-only '^src' --output-type dot | dot -T svg > dependency-graph.svg
+pnpm run depcruise:graph
+# or: pnpm exec depcruise src --include-only '^src' --output-type dot | dot -T svg > dependency-graph.svg
 ```
 
 ![Dependency graph](./dependency-graph.svg)

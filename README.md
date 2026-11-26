@@ -38,9 +38,9 @@ cd my-project
 # - README title + the [owner]/[repo] URLs in the badges
 # - LICENSE holder if it isn't you yet
 
-npm install
-npm run build
-npm test
+pnpm install
+pnpm run build
+pnpm test
 ```
 
 When you're happy, reset the git history and push to your own remote:
@@ -55,16 +55,16 @@ The only placeholder is `logHello()` in `src/index.ts`. Replace it with your pub
 
 ## Commands you'll actually use
 
-| Command                 | What it does                                                                                    |
-| ----------------------- | ----------------------------------------------------------------------------------------------- |
-| `npm run dev`           | `tsc --watch` while you work                                                                    |
-| `npm run build`         | compile `src/` to `dist/`                                                                       |
-| `npm test`              | run the tests once (Vitest)                                                                     |
-| `npm run test:coverage` | run tests with coverage; 80% thresholds are enforced                                            |
-| `npm run lint`          | ESLint; add `:fix` to autofix                                                                   |
-| `npm run format`        | Prettier, write mode                                                                            |
-| `npm run check`         | the local stand-in for the CI gate: lint, types, format, filenames, dead code, dependency rules |
-| `npm run release:dry`   | preview what semantic-release would do, without publishing                                      |
+| Command                  | What it does                                                                                    |
+| ------------------------ | ----------------------------------------------------------------------------------------------- |
+| `pnpm run dev`           | `tsc --watch` while you work                                                                    |
+| `pnpm run build`         | compile `src/` to `dist/`                                                                       |
+| `pnpm test`              | run the tests once (Vitest)                                                                     |
+| `pnpm run test:coverage` | run tests with coverage; 80% thresholds are enforced                                            |
+| `pnpm run lint`          | ESLint; add `:fix` to autofix                                                                   |
+| `pnpm run format`        | Prettier, write mode                                                                            |
+| `pnpm run check`         | the local stand-in for the CI gate: lint, types, format, filenames, dead code, dependency rules |
+| `pnpm run release:dry`   | preview what semantic-release would do, without publishing                                      |
 
 Every script, when to reach for it, and what breaks if you remove the tool behind it is
 in [docs/tooling.md](docs/tooling.md).
@@ -83,13 +83,12 @@ in [docs/tooling.md](docs/tooling.md).
 | Release       | semantic-release (`@semantic-release/changelog`, `@semantic-release/git`, `@semantic-release/npm`)                                                 | `^25`                |
 | Documentation | TypeDoc + `typedoc-plugin-markdown` (outputs to `docs/api/`)                                                                                       | `^0.28` / `^4`       |
 | Spell check   | CSpell                                                                                                                                             | `^10`                |
-| Lockfile      | lockfile-lint (`--allowed-hosts npm --validate-https --validate-integrity --empty-hostname false` on `package-lock.json`)                          | `^5.1`               |
 | Filename      | ls-lint (`.ls-lint.yml`, `kebab-case`)                                                                                                             | `2.3.2`              |
 | Workflow lint | actionlint (`actionlint -color` + shellcheck)                                                                                                      | `1.7.12`             |
 
 ## Prerequisites
 
-- Node.js `>=26` (`.nvmrc` pins the major I develop against), npm `>=10`
+- Node.js `>=26` (`.nvmrc` pins the major I develop against), pnpm `>=10`
 - Git `>=2.40`
 
 ### External tools (manual installation required)
@@ -97,15 +96,15 @@ in [docs/tooling.md](docs/tooling.md).
 These tools are not in `package.json` and must be installed separately if you want to run
 their scripts locally. CI installs its own copies where needed.
 
-| Tool                    | Role in project                                  | Install                                                                                                                   | When required?                                                   |
-| ----------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| **Go** `>=1.21`         | Compiles / installs `osv-scanner` locally        | <https://go.dev/dl/> or `brew install go` / `apt install golang`                                                          | `npm run osv*` locally; not needed in CI                         |
-| **osv-scanner**         | Vulnerability scanning (`npm run osv`)           | `go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest` then `export PATH=$PATH:$(go env GOPATH)/bin`        | `npm run osv`, `osv:html` locally; in CI via GitHub action       |
-| **zizmor** `>=1.30`     | GitHub Actions security audit                    | `cargo install zizmor` · `pipx install zizmor` · `brew install zizmor` · binary at `github.com/woodruffw/zizmor/releases` | `npm run zizmor` locally; in CI via GitHub action                |
-| **actionlint** `1.7.12` | Linter for GitHub Actions workflows + shellcheck | `go install github.com/rhysd/actionlint/cmd/actionlint@latest` · `brew install actionlint` · script download              | `npm run actionlint` locally (or `npm run actionlint:docker`)    |
-| **reuse** `>=6.2`       | REUSE / SPDX compliance check                    | `pipx install reuse` · `pip install reuse`                                                                                | `npm run reuse`, `npm run reuse:annotate` locally; checked in CI |
-| **Graphviz** (`dot`)    | Generates `dependency-graph.svg`                 | `brew install graphviz` / `apt install graphviz` / <https://graphviz.org/download/>                                       | `npm run depcruise:graph` only                                   |
-| **Git** `>=2.40`        | Husky hooks, conventional commits, releases      | <https://git-scm.com/downloads>                                                                                           | always                                                           |
+| Tool                    | Role in project                                  | Install                                                                                                                   | When required?                                                     |
+| ----------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Go** `>=1.21`         | Compiles / installs `osv-scanner` locally        | <https://go.dev/dl/> or `brew install go` / `apt install golang`                                                          | `pnpm run osv*` locally; not needed in CI                          |
+| **osv-scanner**         | Vulnerability scanning (`pnpm run osv`)          | `go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest` then `export PATH=$PATH:$(go env GOPATH)/bin`        | `pnpm run osv`, `osv:html` locally; in CI via GitHub action        |
+| **zizmor** `>=1.30`     | GitHub Actions security audit                    | `cargo install zizmor` · `pipx install zizmor` · `brew install zizmor` · binary at `github.com/woodruffw/zizmor/releases` | `pnpm run zizmor` locally; in CI via GitHub action                 |
+| **actionlint** `1.7.12` | Linter for GitHub Actions workflows + shellcheck | `go install github.com/rhysd/actionlint/cmd/actionlint@latest` · `brew install actionlint` · script download              | `pnpm run actionlint` locally (or `pnpm run actionlint:docker`)    |
+| **reuse** `>=6.2`       | REUSE / SPDX compliance check                    | `pipx install reuse` · `pip install reuse`                                                                                | `pnpm run reuse`, `pnpm run reuse:annotate` locally; checked in CI |
+| **Graphviz** (`dot`)    | Generates `dependency-graph.svg`                 | `brew install graphviz` / `apt install graphviz` / <https://graphviz.org/download/>                                       | `pnpm run depcruise:graph` only                                    |
+| **Git** `>=2.40`        | Husky hooks, conventional commits, releases      | <https://git-scm.com/downloads>                                                                                           | always                                                             |
 
 Verify locally:
 
@@ -119,13 +118,13 @@ Architecture rules are defined in [`.dependency-cruiser.cjs`](./.dependency-crui
 (`no-circular`, `no-orphans`, `no-non-package-json`, `not-to-dev-dep`, …). Verify with:
 
 ```bash
-npm run depcruise
+pnpm run depcruise
 ```
 
 Generate the graph with `dependency-cruiser` + Graphviz (`dot`):
 
 ```bash
-npm run depcruise:graph
+pnpm run depcruise:graph
 ```
 
 ![Dependency graph](./dependency-graph.svg)
@@ -138,7 +137,7 @@ The SVG is committed and automatically refreshed on pre-commit when `src/` or
 `quality.yml` (PRs to `main`, pushes to `develop`): REUSE headers, lockfile lint, ESLint,
 package.json lint, filename lint, spell check, secret scan, Prettier, editorconfig, package
 sort, type checks for source and tests, `test:coverage`, knip, dependency-cruiser.
-Commit messages are validated by commitlint. A separate audit job runs `npm audit`,
+Commit messages are validated by commitlint. A separate audit job runs `pnpm audit`,
 osv-scanner (SARIF uploaded to code scanning), and uploads SBOM artifacts.
 
 Other workflows lint the workflow files themselves (actionlint, zizmor), run CodeQL with
@@ -173,17 +172,17 @@ Steps 1 and 2 are in the repo. Step 3 lives on npm's side and can only be done b
 ## Documentation
 
 - [docs/](./docs): hand-written guides, starting with the [tooling reference](docs/tooling.md)
-- `docs/api/`: API reference generated from TSDoc (`npm run docs`); regenerate and commit
+- `docs/api/`: API reference generated from TSDoc (`pnpm run docs`); regenerate and commit
   it when the public API changes. Releases regenerate it automatically.
-- `reports/docs/`: the same docs as a browsable HTML site (`npm run docs:html`, gitignored)
-- [`dependency-graph.svg`](./dependency-graph.svg) at the root (`npm run depcruise:graph`,
+- `reports/docs/`: the same docs as a browsable HTML site (`pnpm run docs:html`, gitignored)
+- [`dependency-graph.svg`](./dependency-graph.svg) at the root (`pnpm run depcruise:graph`,
   also refreshed by the pre-commit hook when `src/` changes)
 
 ## Contributing
 
 Setup, conventions, and the PR flow are in [CONTRIBUTING.md](./CONTRIBUTING.md); the
 [Code of Conduct](./CODE_OF_CONDUCT.md) covers behavior. Commit messages follow
-conventional commits, and `npm run commit` walks you through one.
+conventional commits, and `pnpm run commit` walks you through one.
 
 ### Contributors
 

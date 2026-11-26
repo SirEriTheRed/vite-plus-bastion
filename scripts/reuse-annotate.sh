@@ -16,7 +16,7 @@ git ls-files | while IFS= read -r file; do
   # Skip files whose licensing is declared elsewhere: REUSE.toml, a *.license sidecar,
   # the licence texts themselves, or generated docs.
   case "$file" in
-    LICENSE|LICENSES/*|*.license|REUSE.toml|docs/*|.editorconfig|.gitattributes|.gitignore|.ls-lint.yml|.npmrc|.nvmrc|.prettierignore|package-lock.json) continue ;;
+    LICENSE|LICENSES/*|*.license|REUSE.toml|docs/*|.editorconfig|.gitattributes|.gitignore|.ls-lint.yml|.npmrc|.nvmrc|.prettierignore|pnpm-lock.yaml) continue ;;
   esac
   if [ -f "$file.license" ]; then
     continue

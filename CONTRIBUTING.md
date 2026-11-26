@@ -18,16 +18,16 @@ bootstrapping their own project from it. The bootstrap notes are marked where th
 
 ## Setup
 
-- Node.js `>=26` (`.nvmrc` pins the major I use), npm `>=10`, Git `>=2.40`
+- Node.js `>=26` (`.nvmrc` pins the major I use), pnpm `>=10`, Git `>=2.40`
 
 ```bash
 git clone https://github.com/SirEriTheRed/ts-bastion.git
 cd ts-bastion
-npm install
+pnpm install
 
-npm run type-check
-npm run lint
-npm test
+pnpm run type-check
+pnpm run lint
+pnpm test
 ```
 
 A few scripts need binaries that aren't npm packages (`osv-scanner`, `zizmor`, Graphviz).
@@ -62,7 +62,7 @@ fix(api): handle null cursor in search
 docs: clarify release notes section
 ```
 
-If you'd rather answer prompts than remember the format, `npm run commit` opens an
+If you'd rather answer prompts than remember the format, `pnpm run commit` opens an
 interactive helper.
 
 ## Code style
@@ -83,25 +83,25 @@ The things that catch people first:
 - Functions get verb prefixes (`get`, `create`, `handle`, …) and names stay verbose;
   abbreviations beyond `i` and `j` fail lint.
 - Tests are type-checked by [tsconfig.test.json](./tsconfig.test.json), not the main config
-  (`npm run type-check:tests`).
+  (`pnpm run type-check:tests`).
 
 ## Hooks
 
-Husky installs them on `npm install`. lint-staged runs on what's staged: ESLint + Prettier
-on `*.{js,ts,md}`, Prettier on `*.json`, type-check on `.ts`, lockfile-lint on
-`package-lock.json`, secretlint on everything. If `src/` or `.dependency-cruiser.cjs` is
+Husky installs them on `pnpm install`. lint-staged runs on what's staged: ESLint + Prettier
+on `*.{js,ts,md}`, Prettier on `*.json`, type-check on `.ts`, secretlint on
+everything. If `src/` or `.dependency-cruiser.cjs` is
 staged and Graphviz is installed, `dependency-graph.svg` is regenerated and re-staged.
-`commit-msg` runs commitlint; `pre-push` runs `npm run check`, build, and tests.
+`commit-msg` runs commitlint; `pre-push` runs `pnpm run check`, build, and tests.
 
 `--no-verify` exists, but the same checks run in CI anyway.
 
 ## Before you push
 
 ```bash
-npm run check              # lint, package lint, type checks, format, filenames, knip, depcruise
-npm run test:coverage      # 80% thresholds enforced
-npm run lint:spell
-npm run secretlint
+pnpm run check              # lint, package lint, type checks, format, filenames, knip, depcruise
+pnpm run test:coverage      # 80% thresholds enforced
+pnpm run lint:spell
+pnpm run secretlint
 ```
 
 That's close enough to what CI runs. The full list lives in
@@ -111,16 +111,16 @@ audits (`osv`, `zizmor`, `audit:signatures`) are documented there too.
 ## Tests and docs
 
 - Tests live in `tests/**/*.test.ts` and use Vitest globals (`describe`/`it`/`expect`
-  without imports). New features should come with tests; `npm run test:coverage` is the
+  without imports). New features should come with tests; `pnpm run test:coverage` is the
   gate.
 - Public API changes need TSDoc comments (`tsdoc/syntax` is an error when missing or
-  wrong) and a regenerated API reference: `npm run docs`, then commit `docs/api/`.
+  wrong) and a regenerated API reference: `pnpm run docs`, then commit `docs/api/`.
   Releases regenerate it automatically, but don't leave it stale in a PR that changes the
   API.
 - Hand-written guides live in `docs/` (see `docs/tooling.md`). Never edit `docs/api/` by
   hand; it gets wiped and rebuilt.
 - Structural changes to `src/` refresh `dependency-graph.svg` through the pre-commit hook,
-  or run `npm run depcruise:graph` yourself.
+  or run `pnpm run depcruise:graph` yourself.
 
 ## Pull requests
 
@@ -131,7 +131,7 @@ audits (`osv`, `zizmor`, `audit:signatures`) are documented there too.
 
 ## Security
 
-Dependency and supply-chain checks run in CI (`npm audit`, osv-scanner, lockfile-lint,
+Dependency and supply-chain checks run in CI (`pnpm audit`, osv-scanner,
 secretlint) and some have local scripts; [docs/tooling.md](docs/tooling.md) covers which
 is which. If you find a vulnerability, do not open a public issue: see
 [SECURITY.md](./SECURITY.md).
@@ -144,7 +144,7 @@ messages, changelog update, Sigstore attestations for `dist/**` and the SBOMs, a
 that PR and merges it once checks are green; the release job then tags and publishes the
 GitHub release. npm publishing is off by default (`private: true`, `npmPublish: false`);
 the README explains what flipping it on takes. Preview any time with
-`npm run release:dry`.
+`pnpm run release:dry`.
 
 ## Where to ask
 

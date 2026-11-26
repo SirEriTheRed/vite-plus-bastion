@@ -1,4 +1,4 @@
-npm run check
-npm run build
-npm test
+pnpm run check
+pnpm run build
+pnpm test
 rm -f *.tgz

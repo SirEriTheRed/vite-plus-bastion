@@ -24,19 +24,18 @@ Scripts that need a binary outside npm are listed in the README's prerequisites 
 
 ## Lint and format
 
-| Script                           | When                                                                                                                                  |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `lint` / `lint:fix`              | ESLint over the repo. `:fix` applies what it can autofix.                                                                             |
-| `format` / `format:check`        | Prettier write or verify. `:check` is what CI runs.                                                                                   |
-| `lint:package`                   | Lint `package.json` itself (npm-package-json-lint).                                                                                   |
-| `package:sort`                   | Normalize `package.json` key order. CI checks this with `--check`.                                                                    |
-| `lint:spell`                     | cspell over source and docs. Run after writing prose or new identifiers.                                                              |
-| `ls-lint`                        | Filename and directory naming (kebab-case).                                                                                           |
-| `editorconfig`                   | Whitespace, EOL, charset rules from `.editorconfig`. Docker variant exists if you don't want the local binary.                        |
-| `lockfile-lint`                  | Verify `package-lock.json` only references the npm registry over HTTPS with intact integrity hashes. Run after touching dependencies. |
-| `secretlint` / `secretlint:mask` | Scan the tree for committed secrets. `:mask` hides matches in the output. Run before pushing anything that came from elsewhere.       |
+| Script                           | When                                                                                                                            |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `lint` / `lint:fix`              | ESLint over the repo. `:fix` applies what it can autofix.                                                                       |
+| `format` / `format:check`        | Prettier write or verify. `:check` is what CI runs.                                                                             |
+| `lint:package`                   | Lint `package.json` itself (npm-package-json-lint).                                                                             |
+| `package:sort`                   | Normalize `package.json` key order. CI checks this with `--check`.                                                              |
+| `lint:spell`                     | cspell over source and docs. Run after writing prose or new identifiers.                                                        |
+| `ls-lint`                        | Filename and directory naming (kebab-case).                                                                                     |
+| `editorconfig`                   | Whitespace, EOL, charset rules from `.editorconfig`. Docker variant exists if you don't want the local binary.                  |
+| `secretlint` / `secretlint:mask` | Scan the tree for committed secrets. `:mask` hides matches in the output. Run before pushing anything that came from elsewhere. |
 
-`npm run check` chains the local stand-in for the CI gate: lint, package lint, both type
+`pnpm run check` chains the local stand-in for the CI gate: lint, package lint, both type
 checks, format check, editorconfig, ls-lint, knip, and depcruise. Run it before you push
 if you don't want to wait for CI to tell you.
 
@@ -76,8 +75,8 @@ There is no static coverage badge on purpose. The real number comes from
 | `codeql`                             | Run CodeQL queries locally through `scripts/codeql-scan.sh`. CI runs the same analysis with `security-extended`.                                                                             |
 | `reuse`, `reuse:annotate`            | Check that every file carries SPDX copyright and license headers. `:annotate` adds missing headers to tracked files; review the diff before committing it.                                   |
 
-CI also runs `npm audit` (high on production deps, critical on the full tree). That one
-has no local script; run `npm audit` yourself when you want it.
+CI also runs `pnpm audit` (high on production deps, critical on the full tree). That one
+has no local script; run `pnpm audit` yourself when you want it.
 
 ## Documentation
 
@@ -94,7 +93,7 @@ has no local script; run `npm audit` yourself when you want it.
 | `commit`      | Interactive prompt that builds a conventional commit message. Easier than remembering the format. |
 | `release`     | Run semantic-release locally. Almost never needed; CI does this on `main`.                        |
 | `release:dry` | Preview the next version and notes without releasing.                                             |
-| `prepare`     | Installs the husky hooks. Runs automatically on `npm install`.                                    |
+| `prepare`     | Installs the husky hooks. Runs automatically on `pnpm install`.                                   |
 
 Releases: on a push to `main` that has releasable commits, `release.yml` opens a
 `release/vX.Y.Z` branch and prints a PR link in the run summary. A human opens the PR
@@ -119,8 +118,8 @@ by default; see the README for the three manual steps to enable it.
 ## Generated output layout
 
 ```text
-dist/                        ← build output (npm run build)
-reports/                     ← gitignored; wiped by npm run cleanup
+dist/                        ← build output (pnpm run build)
+reports/                     ← gitignored; wiped by pnpm run cleanup
 ├── coverage/                ← vitest HTML coverage
 ├── sbom/                    ← SPDX + CycloneDX SBOMs
 ├── osv-report.html          ← local osv-scanner HTML report
