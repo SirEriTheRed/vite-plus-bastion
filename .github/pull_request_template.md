@@ -27,11 +27,11 @@ SPDX-License-Identifier: MIT
 ## Checklist
 
 - [ ] branched from `main` as `feat/…`, `fix/…`, `docs/…`, or `chore/…`
-- [ ] commits are Conventional Commits (`npm run commit` helps)
-- [ ] `npm run check` passes
-- [ ] `npm run test:coverage` meets the 80% thresholds
+- [ ] commits are Conventional Commits (`pnpm run commit` helps)
+- [ ] `pnpm run check` passes
+- [ ] `pnpm run test:coverage` meets the 80% thresholds
 - [ ] tests added or updated when behavior changes
-- [ ] public API changes have TSDoc, a fresh `npm run docs`, and committed `docs/api/`
+- [ ] public API changes have TSDoc, a fresh `pnpm run docs`, and committed `docs/api/`
 - [ ] `dependency-graph.svg` regenerated if `src/` structure changed
 - [ ] no secrets in the diff
 - [ ] new files carry REUSE headers

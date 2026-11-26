@@ -140,7 +140,7 @@
     "reports",
     "docs/api",
     "*.log",
-    "package-lock.json",
+    "pnpm-lock.yaml",
     "cspell.json",
     ".git"
   ]

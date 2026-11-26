@@ -30,8 +30,8 @@ tests against this project or its users.
 
 ## What runs automatically
 
-CI covers the usual supply-chain ground: `npm audit` (blocking on high for production
-deps, critical for the full tree), osv-scanner uploaded to code scanning, lockfile-lint,
+CI covers the usual supply-chain ground: `pnpm audit` (blocking on high for production
+deps, critical for the full tree), osv-scanner uploaded to code scanning,
 and secretlint on every commit. Local scripts for the same checks are listed in
 [docs/tooling.md](docs/tooling.md); vulnerability reports from humans still go through the
 channels above.

@@ -35,5 +35,5 @@ docs/                  @SirEriTheRed
 
 # Release-critical files: a bad merge here ships a bad release.
 package.json           @SirEriTheRed
-package-lock.json      @SirEriTheRed
+pnpm-lock.yaml      @SirEriTheRed
 .releaserc.json        @SirEriTheRed

@@ -1,3 +1,6 @@
+# Pnpm
+.pnpm-store
+
 # Dependencies
 node_modules/
 .pnp

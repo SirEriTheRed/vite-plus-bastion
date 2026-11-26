@@ -35,30 +35,30 @@ jobs:
           persist-credentials: false
       - name: REUSE Compliance Check
         uses: fsfe/reuse-action@676e2d560c9a403aa252096d99fcab3e1132b0f5 # v6.0.0
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '26'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run lockfile-lint
-      - run: npm run lint
-      - run: npm run lint:package
-      - run: npm run ls-lint
-      - run: npm run lint:spell
-      - run: npm run secretlint
-      - run: npm run format:check
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run lint
+      - run: pnpm run lint:package
+      - run: pnpm run ls-lint
+      - run: pnpm run lint:spell
+      - run: pnpm run secretlint
+      - run: pnpm run format:check
       # editorconfig-checker downloads its binary from GitHub Releases at first
       # run; without a token the unauthenticated API rate limit (60/h per shared
       # runner IP) can 403 and fail the whole job.
-      - run: npm run editorconfig
+      - run: pnpm run editorconfig
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - run: npm run package:sort -- --check
-      - run: npm run type-check
-      - run: npm run type-check:tests
-      - run: npm run test:coverage
-      - run: npx knip
-      - run: npm run depcruise
+      - run: pnpm run package:sort -- --check
+      - run: pnpm run type-check
+      - run: pnpm run type-check:tests
+      - run: pnpm run test:coverage
+      - run: pnpm exec knip
+      - run: pnpm run depcruise
 
   commitlint:
     name: Commitlint
@@ -71,19 +71,20 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '26'
-          cache: 'npm'
-      - run: npm ci
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
       - name: Validate commits
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.sha }} --verbose --config ./commitlint.config.cjs
+            pnpm exec commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.sha }} --verbose --config ./commitlint.config.cjs
           elif ! git cat-file -e "${{ github.event.before }}^{commit}" 2>/dev/null; then
-            npx commitlint --last --verbose --config ./commitlint.config.cjs
+            pnpm exec commitlint --last --verbose --config ./commitlint.config.cjs
           else
-            npx commitlint --from ${{ github.event.before }} --to ${{ github.sha }} --verbose --config ./commitlint.config.cjs
+            pnpm exec commitlint --from ${{ github.event.before }} --to ${{ github.sha }} --verbose --config ./commitlint.config.cjs
           fi
 
   audit:
@@ -97,14 +98,15 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '26'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm audit --omit dev --audit-level high
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --prod --audit-level high
       - name: Full-tree audit (blocks on critical)
-        run: npm audit --audit-level critical
+        run: pnpm audit --audit-level critical
       - run: mkdir -p reports
       - name: OSV scan (non-blocking; SARIF still uploaded, see TODO.md)
         continue-on-error: true
@@ -122,7 +124,7 @@ jobs:
           category: osv-scanner
       - name: Generate SBOM (SPDX + CycloneDX)
         if: always()
-        run: npm run sbom:all
+        run: pnpm run sbom:all
       - name: Upload SBOM artifacts
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -132,7 +134,7 @@ jobs:
           if-no-files-found: warn
       - name: Generate depcruiser HTML report (always)
         if: always()
-        run: npm run depcruise:html || true
+        run: pnpm run depcruise:html || true
       - name: Upload depcruiser HTML report
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -152,8 +154,8 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p reports
-          echo "::group::npm audit signatures"
-          npm audit signatures 2>&1 | tee reports/audit-signatures.txt || true
+          echo "::group::pnpm audit signatures"
+          pnpm audit signatures 2>&1 | tee reports/audit-signatures.txt || true
           echo "::endgroup::"
           exit 0
       - name: Upload audit signatures log

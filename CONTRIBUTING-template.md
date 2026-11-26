@@ -80,7 +80,7 @@ This project follows our [Community Code of Conduct](./CODE_OF_CONDUCT.md) (insp
 -->
 
 - Node.js `>=22` (`lts/jod` recommended, see [.nvmrc](./.nvmrc))
-- npm `>=10`
+- pnpm `>=10`
 - Git `>=2.40`: Husky hooks, `semantic-release`
 
 ### External Tools (Manual Installation Required)
@@ -92,12 +92,12 @@ This project follows our [Community Code of Conduct](./CODE_OF_CONDUCT.md) (insp
 
 These tools are not in `package.json`. CI installs them automatically where needed, but locally you need them for certain commands.
 
-| Tool             | Role                                                                       | Install                                                                                                                   | When Required                                                                              |
-| ---------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Go `>=1.21`      | Required to install `osv-scanner` via `go install`                         | <https://go.dev/dl/> or `brew install go` / `apt install golang`                                                          | `npm run osv*` locally; not needed in CI                                                   |
-| osv-scanner      | Vulnerability scanning (`npm run osv`), `github.com/google/osv-scanner/v2` | `go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest` then `export PATH=$PATH:$(go env GOPATH)/bin`        | any `npm run osv*` locally; in CI via `google/osv-scanner-action@v2` → `reports/osv.sarif` |
-| zizmor `>=1.30`  | GitHub Actions security audit                                              | `cargo install zizmor` · `pipx install zizmor` · `brew install zizmor` · binary at `github.com/woodruffw/zizmor/releases` | local `zizmor .` / `zizmor --persona pedantic .` (not in CI by default)                    |
-| Graphviz (`dot`) | Generates `dependency-graph.svg`                                           | `brew install graphviz` / `apt install graphviz` / <https://graphviz.org/download/>                                       | `npm run depcruise:graph` only                                                             |
+| Tool             | Role                                                                        | Install                                                                                                                   | When Required                                                                               |
+| ---------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Go `>=1.21`      | Required to install `osv-scanner` via `go install`                          | <https://go.dev/dl/> or `brew install go` / `apt install golang`                                                          | `pnpm run osv*` locally; not needed in CI                                                   |
+| osv-scanner      | Vulnerability scanning (`pnpm run osv`), `github.com/google/osv-scanner/v2` | `go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest` then `export PATH=$PATH:$(go env GOPATH)/bin`        | any `pnpm run osv*` locally; in CI via `google/osv-scanner-action@v2` → `reports/osv.sarif` |
+| zizmor `>=1.30`  | GitHub Actions security audit                                               | `cargo install zizmor` · `pipx install zizmor` · `brew install zizmor` · binary at `github.com/woodruffw/zizmor/releases` | local `zizmor .` / `zizmor --persona pedantic .` (not in CI by default)                     |
+| Graphviz (`dot`) | Generates `dependency-graph.svg`                                            | `brew install graphviz` / `apt install graphviz` / <https://graphviz.org/download/>                                       | `pnpm run depcruise:graph` only                                                             |
 
 Verify locally:
 
@@ -126,12 +126,12 @@ git clone https://github.com/[OWNER]/[REPO].git
 cd [REPO]
 
 # 2. Install
-npm install
+pnpm install
 
 # 3. Verify
-npm run type-check
-npm run lint
-npm test
+pnpm run type-check
+pnpm run lint
+pnpm test
 ```
 
 If you are bootstrapping a new project from this template, also:
@@ -160,7 +160,7 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org) en
 
 - The Husky `commit-msg` hook runs `commitlint --edit` on every commit; non-conventional messages are rejected.
 - The CI `commitlint` job validates the full history on push/PR (see `quality.yml`).
-- Commitizen helper: use `npm run commit` (alias `npm run commit` → `cz` with `@commitlint/cz-commitlint`) for an interactive prompt instead of crafting the message by hand.
+- Commitizen helper: use `pnpm run commit` (alias `pnpm run commit` → `cz` with `@commitlint/cz-commitlint`) for an interactive prompt instead of crafting the message by hand.
 
 Format: `<type>(<scope>): <description>`
 
@@ -215,73 +215,71 @@ Defined in [tsconfig.json](./tsconfig.json):
 - `skipLibCheck: false`: all `.d.ts` in `node_modules` are checked.
 - `exactOptionalPropertyTypes: true`: you cannot assign `undefined` to optional properties.
 - `noUncheckedIndexedAccess: true`: indexed access returns `T | undefined`.
-- Tests stay out of the main config; use [tsconfig.test.json](./tsconfig.test.json) (`vitest/globals`, `noUnusedLocals: false`) via `npm run type-check:tests`.
+- Tests stay out of the main config; use [tsconfig.test.json](./tsconfig.test.json) (`vitest/globals`, `noUnusedLocals: false`) via `pnpm run type-check:tests`.
 
 ## Pre-commit Hooks
 
 Managed by Husky + lint-staged (see [.husky/pre-commit](./.husky/pre-commit) and [lint-staged.config.js](./lint-staged.config.js)):
 
-| Trigger                                    | Action                                                                                                                     |
-| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| `*.{js,ts}` staged                         | `eslint --fix` + `prettier --write`                                                                                        |
-| `*.md` staged                              | `eslint --fix` + `prettier --write`                                                                                        |
-| `*.json` staged                            | `prettier --write`                                                                                                         |
-| `*.ts` staged                              | `npm run type-check` (`tsc --noEmit`)                                                                                      |
-| `package-lock.json` staged                 | `npm run lockfile-lint`                                                                                                    |
-| `*` (any file) staged                      | `secretlint`                                                                                                               |
-| `src/` or `.dependency-cruiser.cjs` staged | regenerate `dependency-graph.svg` via `npm run depcruise:graph` if `dot` is available, then `git add dependency-graph.svg` |
+| Trigger                                    | Action                                                                                                                      |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| `*.{js,ts}` staged                         | `eslint --fix` + `prettier --write`                                                                                         |
+| `*.md` staged                              | `eslint --fix` + `prettier --write`                                                                                         |
+| `*.json` staged                            | `prettier --write`                                                                                                          |
+| `*.ts` staged                              | `pnpm run type-check` (`tsc --noEmit`)                                                                                      |
+| `*` (any file) staged                      | `secretlint`                                                                                                                |
+| `src/` or `.dependency-cruiser.cjs` staged | regenerate `dependency-graph.svg` via `pnpm run depcruise:graph` if `dot` is available, then `git add dependency-graph.svg` |
 
 Additional hooks:
 
 - `commit-msg`: `commitlint --edit`
-- `pre-push`: `npm run check && npm run build && npm test && rm -f *.tgz`
+- `pre-push`: `pnpm run check && pnpm run build && pnpm test && rm -f *.tgz`
 
-Hooks run automatically after `npm install` (`prepare` → `husky`). Bypass only with good reason (`--no-verify` is discouraged).
+Hooks run automatically after `pnpm install` (`prepare` → `husky`). Bypass only with good reason (`--no-verify` is discouraged).
 
 ## Quality Checks
 
 Run the same checks CI runs before pushing. Recommended order (see `AGENTS.md`):
 
 ```bash
-npm run lint
-npm run type-check
-npm run type-check:tests
-npm run format:check
-npm run lint:spell
-npm run secretlint
-npm run test:coverage
-npm run knip
-npm run depcruise
+pnpm run lint
+pnpm run type-check
+pnpm run type-check:tests
+pnpm run format:check
+pnpm run lint:spell
+pnpm run secretlint
+pnpm run test:coverage
+pnpm run knip
+pnpm run depcruise
 ```
 
 Shorthand alias (lint + type-check + format:check + knip + depcruise):
 
 ```bash
-npm run check
+pnpm run check
 ```
 
 Full CI parity (mirrors `quality.yml` `check` + `audit` jobs):
 
 ```bash
-npm run lockfile-lint
-npm run lint
-npm run lint:spell
-npm run secretlint
-npm run format:check
-npm run type-check
-npm run type-check:tests
-npm run test:coverage
-npx knip
-npm run depcruise
-npm audit --omit=dev --audit-level=high
-npm run depcruise:html
+pnpm run lint
+pnpm run lint:spell
+pnpm run secretlint
+pnpm run format:check
+pnpm run type-check
+pnpm run type-check:tests
+pnpm run test:coverage
+pnpm exec knip
+pnpm run depcruise
+pnpm audit --prod --audit-level high
+pnpm run depcruise:html
 ```
 
 Optional local audits:
 
 ```bash
-npm run osv              # requires Go + osv-scanner binary
-npm run osv:html         # → reports/osv-report.html (local-only, not in CI)
+pnpm run osv              # requires Go + osv-scanner binary
+pnpm run osv:html         # → reports/osv-report.html (local-only, not in CI)
 zizmor .                 # GitHub Actions audit
 zizmor --persona pedantic .
 ```
@@ -290,14 +288,14 @@ zizmor --persona pedantic .
 
 - Framework: [Vitest](https://vitest.dev) with `globals: true`, so `describe`/`it`/`expect` are available without imports (see [vitest.config.ts](./vitest.config.ts)).
 - Location: `tests/**/*.test.ts` (smoke test: `tests/hello.test.ts` → `src/index.ts` `hello()`).
-- Coverage: 80% thresholds for lines/functions/branches/statements (enforced via `npm run test:coverage` → `reports/coverage/`). `npm test` runs without coverage for speed.
+- Coverage: 80% thresholds for lines/functions/branches/statements (enforced via `pnpm run test:coverage` → `reports/coverage/`). `pnpm test` runs without coverage for speed.
 
 ```bash
-npm test                  # fast, no coverage
-npm run test:coverage     # with 80% thresholds → reports/coverage/
-npm run test:watch        # watch mode
-npm run test:coverage:watch
-npm run test:ui           # Vitest UI
+pnpm test                  # fast, no coverage
+pnpm run test:coverage     # with 80% thresholds → reports/coverage/
+pnpm run test:watch        # watch mode
+pnpm run test:coverage:watch
+pnpm run test:ui           # Vitest UI
 ```
 
 When adding features, include tests that preserve or improve coverage. Test files use `tsconfig.test.json` and relaxed lint rules for globals.
@@ -308,21 +306,20 @@ When adding features, include tests that preserve or improve coverage. Test file
 - TypeDoc: generates `docs/api/*.md` (markdown, committed) and `reports/docs/index.html` (HTML, gitignored).
 
 ```bash
-npm run docs        # → docs/api/*.md (commit these)
-npm run docs:html   # → reports/docs/index.html (gitignored, browsable)
-npm run docs:watch  # watch mode
+pnpm run docs        # → docs/api/*.md (commit these)
+pnpm run docs:html   # → reports/docs/index.html (gitignored, browsable)
+pnpm run docs:watch  # watch mode
 ```
 
-During the release on `push` to `main`, `release.yml` runs `npm run docs` on the release branch and `@semantic-release/git` commits `docs/**` with the release commit.
+During the release on `push` to `main`, `release.yml` runs `pnpm run docs` on the release branch and `@semantic-release/git` commits `docs/**` with the release commit.
 
 - Dependency graph: rules in [.dependency-cruiser.cjs](./.dependency-cruiser.cjs). The committed [dependency-graph.svg](./dependency-graph.svg) is auto-regenerated on pre-commit when `src/` changes (requires Graphviz).
 
 ## Security
 
-- npm audit: `npm audit --omit=dev --audit-level=high` (blocking in CI `audit` job; production dependencies only). CI also runs full-tree `npm audit --audit-level=critical`, which reports every finding and blocks only on Critical.
-- osv-scanner: locally `npm run osv` (blocking) / `npm run osv:html` → `reports/osv-report.html`; in CI via `google/osv-scanner-action@v2` → `reports/osv.sarif` → GitHub Security > Code scanning. Known unfixable dev-only findings are suppressed by ID in [`osv-scanner.toml`](./osv-scanner.toml); a new advisory in any of those packages still fails CI.
-- secretlint: `npm run secretlint` / `npm run secretlint:mask` using `@secretlint/secretlint-rule-preset-recommend` (see [.secretlintrc.json](./.secretlintrc.json)). It also runs on every commit via lint-staged, so never commit secrets, tokens, or credentials.
-- lockfile-lint: `npm run lockfile-lint` validates `package-lock.json` (`--allowed-hosts npm --validate-https --validate-integrity --empty-hostname false`).
+- pnpm audit: `pnpm audit --prod --audit-level high` (blocking in CI `audit` job; production dependencies only). CI also runs full-tree `pnpm audit --audit-level critical`, which reports every finding and blocks only on Critical.
+- osv-scanner: locally `pnpm run osv` (blocking) / `pnpm run osv:html` → `reports/osv-report.html`; in CI via `google/osv-scanner-action@v2` → `reports/osv.sarif` → GitHub Security > Code scanning. Known unfixable dev-only findings are suppressed by ID in [`osv-scanner.toml`](./osv-scanner.toml); a new advisory in any of those packages still fails CI.
+- secretlint: `pnpm run secretlint` / `pnpm run secretlint:mask` using `@secretlint/secretlint-rule-preset-recommend` (see [.secretlintrc.json](./.secretlintrc.json)). It also runs on every commit via lint-staged, so never commit secrets, tokens, or credentials.
 - zizmor: optional `zizmor .` for GitHub Actions hardening.
 
 If you discover a security vulnerability, please open a draft security advisory or contact the maintainers privately instead of filing a public issue.
@@ -334,14 +331,14 @@ If you discover a security vulnerability, please open a draft security advisory 
 2. Develop with conventional commits (see
    [Commit Message Conventions](#commit-convention-commit-message-conventions)); keep PRs focused.
 3. Quality gate: before requesting review, make sure that
-   - `npm run lint` / `npm run type-check` / `npm run type-check:tests` pass
-   - `npm run format:check` passes (`npm run format` to fix)
-   - `npm run test:coverage` meets 80% thresholds (see
+   - `pnpm run lint` / `pnpm run type-check` / `pnpm run type-check:tests` pass
+   - `pnpm run format:check` passes (`pnpm run format` to fix)
+   - `pnpm run test:coverage` meets 80% thresholds (see
      [Testing Requirements](#testing-testing-requirements))
    - `dependency-graph.svg` is updated if `src/` structure changed
-   - There are no secrets (`npm run secretlint`) and no lockfile issues (`npm run lockfile-lint`)
+   - There are no secrets (`pnpm run secretlint`)
 4. Push and open a PR targeting `main`. Link any related issue (`Fixes #123`). Fill in the PR description: what changed and why.
-5. CI must pass: `check` (lint/spell/secretlint/format/type-check/coverage/knip/depcruise), `commitlint`, and `audit` (npm audit + osv-scanner SARIF + depcruiser HTML artifact).
+5. CI must pass: `check` (lint/spell/secretlint/format/type-check/coverage/knip/depcruise), `commitlint`, and `audit` (pnpm audit + osv-scanner SARIF + depcruiser HTML artifact).
 6. Review (code review process): address feedback with new commits (or fixup + rebase at maintainer discretion). Maintainers squash or rebase on merge. At least one maintainer review is required.
 7. After merge to `main`: `release.yml` runs `quality` → `build` → `docs` → `semantic-release` automatically.
 
@@ -351,13 +348,13 @@ Releases are fully automated by [semantic-release](https://semantic-release.org)
 
 - Commit messages drive versioning via `@semantic-release/commit-analyzer` (feat → minor, fix → patch, `BREAKING CHANGE` / `!` → major).
 - Changelog updated in [CHANGELOG.md](./CHANGELOG.md) (`@semantic-release/changelog`).
-- No npm publish (`npmPublish: false`, `private: true`); the package is not published. `@semantic-release/git` commits `package.json` + `package-lock.json` + `CHANGELOG.md` + `docs/**` with `chore(release): ${version}`, deliberately without `[skip ci]` because the release PR's required checks must run (release commits land on `release/vX.Y.Z`, which no workflow watches anyway).
+- No npm publish (`npmPublish: false`, `private: true`); the package is not published. `@semantic-release/git` commits `package.json` + `pnpm-lock.yaml` + `CHANGELOG.md` + `docs/**` with `chore(release): ${version}`, deliberately without `[skip ci]` because the release PR's required checks must run (release commits land on `release/vX.Y.Z`, which no workflow watches anyway).
 - The workflow does not open the `release/vX.Y.Z` pull request itself: a PR created with `GITHUB_TOKEN` triggers no `pull_request` workflows, so its required checks would never report. The run summary instead contains a one-click link to open the release pull request plus the release notes to paste. Open it under your own account (your event runs all checks), then enable auto-merge or merge once green.
 
 Preview locally:
 
 ```bash
-npm run release:dry
+pnpm run release:dry
 ```
 
 ## Communication Channels

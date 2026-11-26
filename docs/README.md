@@ -12,7 +12,7 @@ Hand-written guides live here; the API reference is generated into [`api/`](./ap
 - [Tooling reference](./tooling.md): every script, when to run it, and what breaks if
   you remove the tool behind it
 - [API reference](./api/README.md): generated from TSDoc comments in `src/` by
-  `npm run docs`. Don't edit it by hand; regenerate and commit when the public API
+  `pnpm run docs`. Don't edit it by hand; regenerate and commit when the public API
   changes
 
 For the project overview, quick start, and publishing setup, see the
