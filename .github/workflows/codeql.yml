@@ -52,7 +52,7 @@ jobs:
           languages: ${{ matrix.language }}
           queries: security-extended
       - uses: github/codeql-action/autobuild@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
-      - run: pnpm run build --if-present
+      - run: pnpm run --if-present build
         if: always()
       - uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
