@@ -13,14 +13,14 @@ Scripts that need a binary outside npm are listed in the README's prerequisites 
 
 ## Build and watch
 
-| Script             | When                                                                                        |
-| ------------------ | ------------------------------------------------------------------------------------------- |
-| `build`            | Compile `src/` to `dist/`. Run before packing or when you want a fresh build.               |
-| `dev`              | Same as build, in watch mode. Use while developing.                                         |
-| `clean`            | Delete `dist/`. When a build looks stale.                                                   |
-| `cleanup`          | Delete `dist/`, `reports/`, caches, and tsbuildinfo. When everything generated needs to go. |
-| `type-check`       | `tsc --noEmit` on source only. Faster than a full build.                                    |
-| `type-check:tests` | Type-check source and tests together. CI runs both; run this before pushing test changes.   |
+| Script             | When                                                                                         |
+| ------------------ | -------------------------------------------------------------------------------------------- |
+| `build`            | Compile each package's `src/` to `dist/`. Run before packing or when you want a fresh build. |
+| `dev`              | Same as build, in watch mode. Use while developing.                                          |
+| `clean`            | Delete `dist/`. When a build looks stale.                                                    |
+| `cleanup`          | Delete `dist/`, `reports/`, caches, and tsbuildinfo. When everything generated needs to go.  |
+| `type-check`       | `tsc --noEmit` on source only. Faster than a full build.                                     |
+| `type-check:tests` | Type-check source and tests together. CI runs both; run this before pushing test changes.    |
 
 ## Lint and format
 
@@ -54,13 +54,13 @@ There is no static coverage badge on purpose. The real number comes from
 
 ## Dead code and dependencies
 
-| Script                   | When                                                                                                                                |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `knip` (alias `analyze`) | Find unused files, exports, and dependencies. Run before releases and when something "feels dead".                                  |
-| `depcruise`              | Enforce dependency rules: no circular imports, no orphans, nothing imported that isn't in `package.json`.                           |
-| `depcruise:html`         | Same rules, HTML report under `reports/depcruiser/` for browsing.                                                                   |
-| `depcruise:graph`        | Regenerate the committed `dependency-graph.svg`. Needs Graphviz. The pre-commit hook does this automatically when `src/` is staged. |
-| `licenses`               | List licenses across dependencies. When reviewing what you're taking on.                                                            |
+| Script                   | When                                                                                                                                                                      |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `knip` (alias `analyze`) | Find unused files, exports, and dependencies. Run before releases and when something "feels dead".                                                                        |
+| `depcruise`              | Enforce dependency rules: no circular imports, no orphans, nothing imported that isn't in `package.json`.                                                                 |
+| `depcruise:html`         | Same rules, HTML report under `reports/depcruiser/` for browsing.                                                                                                         |
+| `depcruise:graph`        | Regenerate the committed `dependency-graph.svg`. Needs Graphviz. The pre-commit hook does this automatically when `apps/`, `packages/` or the depcruise config is staged. |
+| `licenses`               | List licenses across dependencies. When reviewing what you're taking on.                                                                                                  |
 
 ## Security and supply chain
 
@@ -108,9 +108,10 @@ by default; see the README for the three manual steps to enable it.
 - Type-only imports use `import type` (`consistent-type-imports`). Relative imports
   carry `.js` extensions (`verbatimModuleSyntax`).
 - Import order: builtin, external, internal, parent, sibling, index; grouped and alphabetized.
-- `tsconfig.json` turns on `strict`, `exactOptionalPropertyTypes`,
-  `noUncheckedIndexedAccess`, and `skipLibCheck: false`. Tests are checked by
-  `tsconfig.test.json` instead of the main config.
+- The root `tsconfig.json` turns on `strict`, `exactOptionalPropertyTypes`,
+  `noUncheckedIndexedAccess`, and `skipLibCheck: false`; every package extends it and only
+  declares what differs. Tests are checked by `tsconfig.test.json` instead of the main
+  config.
 - Commit messages: conventional commits. CI validates the range with commitlint.
 - Every file carries an SPDX header (REUSE). New files get annotated by the pre-commit
   hook when `reuse` is installed; CI fails without them either way.
@@ -118,14 +119,16 @@ by default; see the README for the three manual steps to enable it.
 ## Generated output layout
 
 ```text
-dist/                        ← build output (pnpm run build)
 reports/                     ← gitignored; wiped by pnpm run cleanup
-├── coverage/                ← vitest HTML coverage
 ├── sbom/                    ← SPDX + CycloneDX SBOMs
 ├── osv-report.html          ← local osv-scanner HTML report
 ├── zizmor.sarif             ← local zizmor SARIF preview
 ├── docs/                    ← TypeDoc HTML site
 └── depcruiser/              ← dependency-cruiser HTML report
+apps/api/
+├── dist/                    ← api build output (pnpm run build)
+└── reports/
+    └── coverage/            ← vitest HTML coverage (per package, 80% thresholds)
 docs/api/                    ← generated markdown API reference (committed)
 dependency-graph.svg         ← committed, regenerated on pre-commit
 ```

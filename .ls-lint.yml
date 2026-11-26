@@ -16,6 +16,7 @@ ls:
 ignore:
   - old-docs
   - node_modules
+  - '**/node_modules'
   - dist
   - reports
   - coverage

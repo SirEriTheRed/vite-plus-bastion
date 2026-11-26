@@ -1,0 +1,46 @@
+{
+  "name": "@vite-bastion/api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The API workspace of the vite-plus-bastion template",
+  "keywords": [
+    "typescript",
+    "api",
+    "template"
+  ],
+  "homepage": "https://github.com/SirEriTheRed/vite-plus-bastion#readme",
+  "bugs": {
+    "url": "https://github.com/SirEriTheRed/vite-plus-bastion/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SirEriTheRed/vite-plus-bastion.git"
+  },
+  "license": "MIT",
+  "author": "erithered",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist",
+    "cleanup": "rm -rf dist reports",
+    "dev": "tsx watch src/index.ts",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:watch": "vitest --coverage",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest",
+    "type-check": "tsc --noEmit",
+    "type-check:tests": "tsc --noEmit -p tsconfig.test.json"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "5.1.1",
+    "tsx": "4.23.15",
+    "vite": "8.3.8",
+    "vitest": "5.1.1"
+  },
+  "engines": {
+    "node": ">=26"
+  }
+}

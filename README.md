@@ -51,14 +51,14 @@ git remote add origin <your-repo-url>
 git push -u origin main
 ```
 
-The only placeholder is `logHello()` in `src/index.ts`. Replace it with your public API.
+The only placeholder is `logHello()` in `apps/api/src/index.ts`. Replace it with your public API.
 
 ## Commands you'll actually use
 
 | Command                  | What it does                                                                                    |
 | ------------------------ | ----------------------------------------------------------------------------------------------- |
-| `pnpm run dev`           | `tsc --watch` while you work                                                                    |
-| `pnpm run build`         | compile `src/` to `dist/`                                                                       |
+| `pnpm run dev`           | `pnpm -r --parallel dev`, each package's dev watcher (tsx, later Vite)                          |
+| `pnpm run build`         | compile each package's `src/` to `dist/`                                                        |
 | `pnpm test`              | run the tests once (Vitest)                                                                     |
 | `pnpm run test:coverage` | run tests with coverage; 80% thresholds are enforced                                            |
 | `pnpm run lint`          | ESLint; add `:fix` to autofix                                                                   |
@@ -129,7 +129,7 @@ pnpm run depcruise:graph
 
 ![Dependency graph](./dependency-graph.svg)
 
-The SVG is committed and automatically refreshed on pre-commit when `src/` or
+The SVG is committed and automatically refreshed on pre-commit when `apps/`, `packages/` or
 `.dependency-cruiser.cjs` is staged (if Graphviz `dot` is installed).
 
 ## What CI runs
@@ -176,7 +176,7 @@ Steps 1 and 2 are in the repo. Step 3 lives on npm's side and can only be done b
   it when the public API changes. Releases regenerate it automatically.
 - `reports/docs/`: the same docs as a browsable HTML site (`pnpm run docs:html`, gitignored)
 - [`dependency-graph.svg`](./dependency-graph.svg) at the root (`pnpm run depcruise:graph`,
-  also refreshed by the pre-commit hook when `src/` changes)
+  also refreshed by the pre-commit hook when `apps/` or `packages/` change)
 
 ## Contributing
 

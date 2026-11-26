@@ -29,7 +29,7 @@ fi
 pnpm exec lint-staged
 pnpm exec ls-lint || true
 
-if git diff --cached --name-only | grep -qE '^src/|\.dependency-cruiser\.cjs'; then
+if git diff --cached --name-only | grep -qE '^(apps|packages)/|\.dependency-cruiser\.cjs'; then
   if command -v dot >/dev/null 2>&1; then
     echo "Updating dependency-graph.svg..."
     pnpm run depcruise:graph || true

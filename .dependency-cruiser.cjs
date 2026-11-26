@@ -131,10 +131,10 @@ module.exports = {
         "or there's something in the test folder that isn't a test.",
       severity: 'error',
       from: {
-        pathNot: '^(tests)',
+        pathNot: '^(?:apps|packages)/[^/]+/tests',
       },
       to: {
-        path: '^(tests)',
+        path: '^(?:apps|packages)/[^/]+/tests',
       },
     },
     {
@@ -159,7 +159,7 @@ module.exports = {
         'section of your package.json. If this module is development only - add it to the ' +
         'from.pathNot re of the not-to-dev-dep rule in the dependency-cruiser configuration',
       from: {
-        path: '^(src)',
+        path: '^(?:apps|packages)/[^/]+/src',
         pathNot: '[.](?:spec|test)[.](?:js|mjs|cjs|jsx|ts|mts|cts|tsx)$',
       },
       to: {
@@ -205,10 +205,10 @@ module.exports = {
     },
 
     // Which modules to exclude
-    // exclude : {
-    //   // path: an array of regular expressions in strings to match against
-    //   path: '',
-    // },
+    exclude: {
+      // path: an array of regular expressions in strings to match against
+      path: ['(?:^|/)dist/', '(?:^|/)reports/', '(?:^|/)coverage/'],
+    },
 
     // Which modules to exclusively include (array of regular expressions in strings)
     // dependency-cruiser will skip everything that doesn't match this pattern
@@ -356,7 +356,7 @@ module.exports = {
       archi: {
         // Pattern of modules to consolidate to.
         collapsePattern:
-          '^(?:packages|src|lib(s?)|app(s?)|bin|test(s?)|spec(s?))/[^/]+|node_modules/(?:@[^/]+/[^/]+|[^/]+)',
+          '^(?:apps|packages|src|lib(s?)|app(s?)|bin|test(s?)|spec(s?))/[^/]+|node_modules/(?:@[^/]+/[^/]+|[^/]+)',
 
         // Options to tweak the appearance of your graph. If you don't specify a
         // theme for 'archi' dependency-cruiser will use the one specified in the

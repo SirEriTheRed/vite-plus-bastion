@@ -20,7 +20,7 @@
     [
       "@semantic-release/git",
       {
-        "assets": ["package.json", "pnpm-lock.json", "CHANGELOG.md", "docs/**"],
+        "assets": ["package.json", "pnpm-lock.yaml", "CHANGELOG.md", "docs/**"],
         "message": "chore(release): ${nextRelease.version}"
       }
     ]
