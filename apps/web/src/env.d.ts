@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-// Réservé à TypeScript "nu" (type-check ESLint) : vue-tsc résout les .vue réellement.
+// Reserved for bare TypeScript (ESLint type-check): vue-tsc resolves .vue files.
 declare module '*.vue' {
   import type { Component } from 'vue';
 
