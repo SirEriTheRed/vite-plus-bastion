@@ -7,9 +7,9 @@ export default {
   ".github/workflows/*.{yml,yaml}": [
     "bash -c 'command -v actionlint >/dev/null 2>&1 && actionlint -color || echo \"skip actionlint (not installed)\"'",
   ],
-  "*.{js,ts}": ["eslint --fix", "prettier --write"],
-  "*.md": ["eslint --fix", "prettier --write"],
-  "*.json": ["prettier --write"],
+  "*.{js,ts}": ["eslint --fix", "vp fmt"],
+  "*.md": ["eslint --fix", "vp fmt"],
+  "*.json": ["vp fmt"],
   "*.ts": ["bash -c 'pnpm run type-check'"],
   "package.json": ["pnpm run lint:package", "pnpm run package:sort"],
   "*": ["secretlint"]

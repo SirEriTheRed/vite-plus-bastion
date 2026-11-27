@@ -1,0 +1,56 @@
+{
+  "name": "@vite-bastion/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The Vue web application of the vite-plus-bastion template",
+  "keywords": [
+    "vue",
+    "vite",
+    "pwa",
+    "web"
+  ],
+  "homepage": "https://github.com/SirEriTheRed/vite-plus-bastion#readme",
+  "bugs": {
+    "url": "https://github.com/SirEriTheRed/vite-plus-bastion/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SirEriTheRed/vite-plus-bastion.git"
+  },
+  "license": "MIT",
+  "author": "erithered",
+  "type": "module",
+  "scripts": {
+    "build": "vp build",
+    "clean": "rm -rf dist",
+    "cleanup": "rm -rf dist reports",
+    "dev": "vp dev",
+    "preview": "vp preview",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:watch": "vitest --coverage",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest",
+    "type-check": "vue-tsc --noEmit",
+    "type-check:tests": "vue-tsc --noEmit -p tsconfig.test.json"
+  },
+  "dependencies": {
+    "pinia": "^3.0.3",
+    "vue": "^3.5.24",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.21",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vitest/coverage-v8": "5.1.1",
+    "happy-dom": "^20.8.3",
+    "tailwindcss": "^4.1.21",
+    "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8001",
+    "vite-plugin-pwa": "^2.0.0",
+    "vitest": "5.1.1",
+    "vue-tsc": "^3.1.9"
+  },
+  "engines": {
+    "node": ">=26"
+  }
+}

@@ -27,7 +27,7 @@ Scripts that need a binary outside npm are listed in the README's prerequisites 
 | Script                           | When                                                                                                                            |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | `lint` / `lint:fix`              | ESLint over the repo. `:fix` applies what it can autofix.                                                                       |
-| `format` / `format:check`        | Prettier write or verify. `:check` is what CI runs.                                                                             |
+| `format` / `format:check`        | oxfmt (via `vp fmt`) write or verify. `:check` is what CI runs.                                                                 |
 | `lint:package`                   | Lint `package.json` itself (npm-package-json-lint).                                                                             |
 | `package:sort`                   | Normalize `package.json` key order. CI checks this with `--check`.                                                              |
 | `lint:spell`                     | cspell over source and docs. Run after writing prose or new identifiers.                                                        |
@@ -108,7 +108,7 @@ by default; see the README for the three manual steps to enable it.
 - Type-only imports use `import type` (`consistent-type-imports`). Relative imports
   carry `.js` extensions (`verbatimModuleSyntax`).
 - Import order: builtin, external, internal, parent, sibling, index; grouped and alphabetized.
-- The root `tsconfig.json` turns on `strict`, `exactOptionalPropertyTypes`,
+- The root `tsconfig.base.json` turns on `strict`, `exactOptionalPropertyTypes`,
   `noUncheckedIndexedAccess`, and `skipLibCheck: false`; every package extends it and only
   declares what differs. Tests are checked by `tsconfig.test.json` instead of the main
   config.

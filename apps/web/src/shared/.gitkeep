@@ -1,0 +1,2 @@
+# Shared folders across modules (utilities, cross-cutting components).
+# Modules may import from shared/, never the reverse (boundaries rule).

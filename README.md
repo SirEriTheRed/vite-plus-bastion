@@ -17,7 +17,7 @@ strict `tsconfig`, ESLint + Prettier, Vitest with coverage thresholds, pre-commi
 CI workflows, release automation, and supply-chain checks. The docs and the checks look
 like a lot because the repo is meant to be complete: a fresh clone should already be close
 to what a real project needs, so you start by writing code instead of assembling config.
-If the strictness feels heavy, the knobs are in `tsconfig.json` and `eslint.config.js`.
+If the strictness feels heavy, the knobs are in `tsconfig.base.json` and `eslint.config.js`.
 
 [![build](https://img.shields.io/github/actions/workflow/status/SirEriTheRed/ts-bastion/quality.yml?branch=main)](https://github.com/SirEriTheRed/ts-bastion/actions)
 [![node](https://img.shields.io/badge/node-%3E%3D26-brightgreen)](https://nodejs.org)
@@ -71,20 +71,20 @@ in [docs/tooling.md](docs/tooling.md).
 
 ## Tooling
 
-| Category      | Tool / Config                                                                                                                                      | Version / Detail     |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| Language      | TypeScript strict (`strict`, `verbatimModuleSyntax`, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `skipLibCheck: false`)              | `6.0.3`              |
-| Lint          | ESLint flat config + `typescript-eslint` (strict + stylistic type-checked), `unicorn`, `sonarjs`, `security`, `import-x`, `eslint-config-prettier` | `^10` / `^8`         |
-| Format        | Prettier (`semi`, `singleQuote`, `tabWidth: 2`, `printWidth: 100`)                                                                                 | `^3.9`               |
-| Tests         | Vitest (`globals: true`) + `@vitest/coverage-v8`, 80% thresholds for lines/functions/branches/statements                                           | `5.0.5`              |
-| Dead code     | Knip                                                                                                                                               | `^6.42`              |
-| Dependencies  | dependency-cruiser (`err-long`, `no-circular`, `no-orphans`, `no-non-package-json`)                                                                | `^18.7`              |
-| Git hooks     | Husky + lint-staged + commitlint (`@commitlint/config-conventional`)                                                                               | `^9` / `^17` / `^21` |
-| Release       | semantic-release (`@semantic-release/changelog`, `@semantic-release/git`, `@semantic-release/npm`)                                                 | `^25`                |
-| Documentation | TypeDoc + `typedoc-plugin-markdown` (outputs to `docs/api/`)                                                                                       | `^0.28` / `^4`       |
-| Spell check   | CSpell                                                                                                                                             | `^10`                |
-| Filename      | ls-lint (`.ls-lint.yml`, `kebab-case`)                                                                                                             | `2.3.2`              |
-| Workflow lint | actionlint (`actionlint -color` + shellcheck)                                                                                                      | `1.7.12`             |
+| Category      | Tool / Config                                                                                                                         | Version / Detail     |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| Language      | TypeScript strict (`strict`, `verbatimModuleSyntax`, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `skipLibCheck: false`) | `6.0.3`              |
+| Lint          | ESLint flat config + `typescript-eslint` (strict + stylistic type-checked), `unicorn`, `sonarjs`, `security`, `import-x`              | `^10` / `^8`         |
+| Format        | Prettier (`semi`, `singleQuote`, `tabWidth: 2`, `printWidth: 100`)                                                                    | `^3.9`               |
+| Tests         | Vitest (`globals: true`) + `@vitest/coverage-v8`, 80% thresholds for lines/functions/branches/statements                              | `5.0.5`              |
+| Dead code     | Knip                                                                                                                                  | `^6.42`              |
+| Dependencies  | dependency-cruiser (`err-long`, `no-circular`, `no-orphans`, `no-non-package-json`)                                                   | `^18.7`              |
+| Git hooks     | Husky + lint-staged + commitlint (`@commitlint/config-conventional`)                                                                  | `^9` / `^17` / `^21` |
+| Release       | semantic-release (`@semantic-release/changelog`, `@semantic-release/git`, `@semantic-release/npm`)                                    | `^25`                |
+| Documentation | TypeDoc + `typedoc-plugin-markdown` (outputs to `docs/api/`)                                                                          | `^0.28` / `^4`       |
+| Spell check   | CSpell                                                                                                                                | `^10`                |
+| Filename      | ls-lint (`.ls-lint.yml`, `kebab-case`)                                                                                                | `2.3.2`              |
+| Workflow lint | actionlint (`actionlint -color` + shellcheck)                                                                                         | `1.7.12`             |
 
 ## Prerequisites
 

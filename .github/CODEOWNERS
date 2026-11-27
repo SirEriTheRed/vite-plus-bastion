@@ -27,8 +27,7 @@
 .github/               @SirEriTheRed
 
 # Source code and its tests.
-src/                   @SirEriTheRed
-tests/                 @SirEriTheRed
+apps/                  @SirEriTheRed
 
 # Hand-written documentation (generated docs/api/ needs no review).
 docs/                  @SirEriTheRed

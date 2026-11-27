@@ -32,7 +32,7 @@ SPDX-License-Identifier: MIT
 - [ ] `pnpm run test:coverage` meets the 80% thresholds
 - [ ] tests added or updated when behavior changes
 - [ ] public API changes have TSDoc, a fresh `pnpm run docs`, and committed `docs/api/`
-- [ ] `dependency-graph.svg` regenerated if `src/` structure changed
+- [ ] `dependency-graph.svg` regenerated if `apps/` structure changed
 - [ ] no secrets in the diff
 - [ ] new files carry REUSE headers
 
