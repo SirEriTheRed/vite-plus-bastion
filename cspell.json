@@ -130,7 +130,9 @@
     "jwvm",
     "pmpm",
     "katex",
-    "Vulns"
+    "Vulns",
+    "voidzero",
+    "unstub"
   ],
   "flagWords": [],
   "ignorePaths": [

@@ -11,12 +11,12 @@ declare module '*.vue' {
   export default component;
 }
 
-// vite/client n'existe pas dans @voidzero-dev/vite-plus-core.
+// vite/client does not exist in @voidzero-dev/vite-plus-core.
 declare module '*.css' {
   import type { CSSModule } from 'vitest/config';
   const cssClass: CSSModule;
   export default cssClass;
 }
 
-// vite/client n'existe pas dans @voidzero-dev/vite-plus-core.
+// vite/client does not exist in @voidzero-dev/vite-plus-core.
 declare module '*.css';

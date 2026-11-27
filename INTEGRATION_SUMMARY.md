@@ -15,4 +15,4 @@ ESLint: existing config kept (sonarjs, security, regexp, tsdoc, markdown, naming
 
 Tests: pnpm test ✅ (vitest, 3 files, 6 tests). Type-check ✅ (vue-tsc TS 6 compatible). CI ✅.
 
-Commandes : pnpm test, vp lint, pnpm run lint:eslint, vp build.
+Commands: pnpm test, vp lint, pnpm run lint:eslint, vp build.
