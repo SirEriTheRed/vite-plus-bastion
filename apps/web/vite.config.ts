@@ -63,7 +63,7 @@ export default defineConfig({
       reportsDirectory: 'reports/coverage',
       provider: 'v8',
       reporter: ['text', 'lcov', 'html'],
-      // Présentation (app/, .vue) et barillets d'index : la logique vit dans services/, stores/, composables/ et est testée.
+      // Presentation (app/, .vue) and index barrels: logic lives in services/, stores/, composables/ and is tested.
       exclude: ['**/*.vue', 'src/app/**', 'src/modules/*/index.ts', '**/*.test.ts', 'tests/**'],
       thresholds: {
         lines: 80,

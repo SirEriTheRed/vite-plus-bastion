@@ -7,7 +7,7 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    // Les .d.ts de workbox (vite-plugin-pwa) ne passent pas le check strict du base.
+    // workbox .d.ts (vite-plugin-pwa) do not pass the base strict check.
     "skipLibCheck": true,
     "noEmit": true
   },
