@@ -69,7 +69,7 @@ interactive helper.
 
 ESLint (strict, type-checked), Prettier, and tsconfig do most of the enforcing. The
 configs are the source of truth: [eslint.config.js](./eslint.config.js),
-[tsconfig.json](./tsconfig.json), and [docs/tooling.md](docs/tooling.md) for the summary.
+[tsconfig.base.json](./tsconfig.base.json), and [docs/tooling.md](docs/tooling.md) for the summary.
 The things that catch people first:
 
 - Filenames are `kebab-case`.
@@ -110,7 +110,7 @@ audits (`osv`, `zizmor`, `audit:signatures`) are documented there too.
 
 ## Tests and docs
 
-- Tests live in `tests/**/*.test.ts` and use Vitest globals (`describe`/`it`/`expect`
+- Tests live in `apps/api/tests/**/*.test.ts` and `apps/web/tests/**/*.test.ts` and use Vitest globals (`describe`/`it`/`expect`
   without imports). New features should come with tests; `pnpm run test:coverage` is the
   gate.
 - Public API changes need TSDoc comments (`tsdoc/syntax` is an error when missing or

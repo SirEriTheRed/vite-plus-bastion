@@ -11,7 +11,7 @@ import security from "eslint-plugin-security";
 import importPlugin from "eslint-plugin-import-x";
 import promise from "eslint-plugin-promise";
 import regexp from "eslint-plugin-regexp";
-import eslintConfigPrettier from "eslint-config-prettier";
+
 import tsdoc from "eslint-plugin-tsdoc";
 import markdown from "@eslint/markdown";
 import vitest from "@vitest/eslint-plugin";
@@ -30,6 +30,7 @@ export default tseslint.config(
       "eslint.config.js",
       "lint-staged.config.js",
       "**/vitest.config.ts",
+      "vite.config.ts",
       "knip.json",
       "commitlint.config.cjs"
     ],
@@ -46,9 +47,10 @@ export default tseslint.config(
   ),
   {
     files: ["**/*.ts", "**/*.js"],
+    ignores: ["**/*.test.ts", "**/*.spec.ts"],
     languageOptions: {
       parserOptions: {
-        project: true,
+        project: ["tsconfig.base.json", "apps/api/tsconfig.json", "apps/web/tsconfig.json"],
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -149,7 +151,7 @@ export default tseslint.config(
     files: ["**/*.test.ts", "**/*.spec.ts"],
     languageOptions: {
       parserOptions: {
-        project: ["apps/api/tsconfig.test.json"],
+        project: ["apps/api/tsconfig.test.json", "apps/web/tsconfig.test.json"],
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -175,7 +177,7 @@ export default tseslint.config(
     languageOptions: {
       globals: vitest.environments.env.globals,
       parserOptions: {
-        project: ["apps/api/tsconfig.test.json"],
+        project: ["apps/api/tsconfig.test.json", "apps/web/tsconfig.test.json"],
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -211,7 +213,7 @@ export default tseslint.config(
     files: ["**/*.js", "**/*.ts", "**/*.mjs", "**/*.mts", "**/*.cjs", "**/*.cts"],
     ...regexp.configs["flat/all"],
   },
-  eslintConfigPrettier,
+
   ...markdown.configs.recommended,
   {
     files: ["**/*.md"],

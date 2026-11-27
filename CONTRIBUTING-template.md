@@ -205,11 +205,11 @@ Conventions are enforced by ESLint (flat config, strict type-checked) and Pretti
   - `property` → `camelCase` (strict)
   - A Boolean `variable`/`parameter` → `camelCase` with prefix `is|has|should|can|was|did`
   - Function verb (warn on `**/*.ts`): must match `^(get|create|fetch|update|delete|find|build|parse|format|validate|handle|set|remove|add|is|has|should|can).+`
-- Other rules: `sonarjs/cognitive-complexity` ≤ 20, `security/detect-*`, `promise/*`, `regexp`, `tsdoc/syntax: error`, `eslint-config-prettier` last.
+- Other rules: `sonarjs/cognitive-complexity` ≤ 20, `security/detect-*`, `promise/*`, `regexp`, `tsdoc/syntax: error`.
 
 ### tsconfig Quirks
 
-Defined in [tsconfig.json](./tsconfig.json):
+Defined in [tsconfig.base.json](./tsconfig.base.json):
 
 - `verbatimModuleSyntax: true`: `import type` and `.js` extensions required.
 - `skipLibCheck: false`: all `.d.ts` in `node_modules` are checked.
@@ -223,9 +223,9 @@ Managed by Husky + lint-staged (see [.husky/pre-commit](./.husky/pre-commit) and
 
 | Trigger                                    | Action                                                                                                                      |
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| `*.{js,ts}` staged                         | `eslint --fix` + `prettier --write`                                                                                         |
-| `*.md` staged                              | `eslint --fix` + `prettier --write`                                                                                         |
-| `*.json` staged                            | `prettier --write`                                                                                                          |
+| `*.{js,ts}` staged                         | `eslint --fix` + `vp fmt`                                                                                                   |
+| `*.md` staged                              | `eslint --fix` + `vp fmt`                                                                                                   |
+| `*.json` staged                            | `vp fmt`                                                                                                                    |
 | `*.ts` staged                              | `pnpm run type-check` (`tsc --noEmit`)                                                                                      |
 | `*` (any file) staged                      | `secretlint`                                                                                                                |
 | `src/` or `.dependency-cruiser.cjs` staged | regenerate `dependency-graph.svg` via `pnpm run depcruise:graph` if `dot` is available, then `git add dependency-graph.svg` |
@@ -287,7 +287,7 @@ zizmor --persona pedantic .
 ## Testing (Testing Requirements)
 
 - Framework: [Vitest](https://vitest.dev) with `globals: true`, so `describe`/`it`/`expect` are available without imports (see [vitest.config.ts](./vitest.config.ts)).
-- Location: `tests/**/*.test.ts` (smoke test: `tests/hello.test.ts` → `src/index.ts` `hello()`).
+- Location: `apps/api/tests/**/*.test.ts` and `apps/web/tests/**/*.test.ts` (smoke test: `apps/api/tests/hello.test.ts` → `apps/api/src/index.ts` `logHello()`).
 - Coverage: 80% thresholds for lines/functions/branches/statements (enforced via `pnpm run test:coverage` → `reports/coverage/`). `pnpm test` runs without coverage for speed.
 
 ```bash

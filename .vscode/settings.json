@@ -66,8 +66,7 @@
     "overrideConfigFile": "eslint.config.js"
   },
   "eslint.rules.customizations": [],
-  "prettier.requireConfig": true,
-  "prettier.useEditorConfig": true,
+
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.preferences.importModuleSpecifier": "relative",
@@ -83,7 +82,7 @@
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
     "package.json": "package-lock.json, .nvmrc, .editorconfig, .prettierrc, .prettierignore, eslint.config.js, tsconfig*.json, vitest.config.ts, knip.json, cspell.json, .ls-lint.yml, .editorconfig-checker.json, typedoc.json, typedoc.html.json",
-    "tsconfig.json": "tsconfig.test.json",
+    "tsconfig.base.json": "tsconfig.test.json",
     ".eslintrc*": "eslint.config.js"
   },
   "vitest.enable": true,

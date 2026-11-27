@@ -1,0 +1,2 @@
+# Dossiers partagés entre modules (utilitaires, composants transverses).
+# Les modules peuvent importer depuis shared/, jamais l'inverse (règle boundaries).

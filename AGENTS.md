@@ -64,8 +64,8 @@ SPDX-License-Identifier: MIT
 | `pnpm run lint`                  | `eslint .` (flat config, strict type-checked)                                                                                            |
 | `pnpm run lint:fix`              | `eslint . --fix`                                                                                                                         |
 | `pnpm run lint:package`          | `npmPkgJsonLint .`, `package.json` convention lint                                                                                       |
-| `pnpm run format`                | `prettier --write .`                                                                                                                     |
-| `pnpm run format:check`          | `prettier --check .`                                                                                                                     |
+| `pnpm run format`                | `vp fmt`                                                                                                                                 |
+| `pnpm run format:check`          | `vp fmt --check`                                                                                                                         |
 | `pnpm run editorconfig`          | `editorconfig-checker`, whitespace, EOL, charset rules                                                                                   |
 | `pnpm run editorconfig:docker`   | `docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker`                                                                   |
 | `pnpm run lint:spell`            | `cspell lint "**/*.{ts,md,json}"`, spell-check source and docs                                                                           |
@@ -126,13 +126,13 @@ binaries: `actionlint`, `dot`, `osv-scanner`, `reuse`, `zizmor`.
     and re-stages it. Fail-soft: prints a notice and continues when `reuse` is not
     installed locally or when annotation fails. CI (`fsfe/reuse-action@v6`) is the real
     gate.
-  - lint-staged: `eslint --fix` + `prettier --write` on staged `*.{js,ts}` and `*.md`,
-    `prettier --write` on `*.json`, `pnpm run type-check` on `*.ts`,
+  - lint-staged: `eslint --fix` + `vp fmt` on staged `*.{js,ts}` and `*.md`,
+    `vp fmt` on `*.json`, `pnpm run type-check` on `*.ts`,
     `pnpm run lint:package` + `pnpm run package:sort` on `package.json`,
     `secretlint` on every staged file, and
     `actionlint` on `.github/workflows/*.{yml,yaml}` when the binary is installed.
   - `pnpm exec ls-lint || true`, a non-blocking filename check.
-  - Regenerates `dependency-graph.svg` when `src/**` or `.dependency-cruiser.cjs` is
+  - Regenerates `dependency-graph.svg` when `apps/**/src/**` or `.dependency-cruiser.cjs` is
     staged and Graphviz `dot` is available.
 - Commit messages: conventional commits enforced via commitlint
   (`@commitlint/config-conventional`); `pnpm run commit` opens the commitizen prompt.
@@ -154,7 +154,7 @@ binaries: `actionlint`, `dot`, `osv-scanner`, `reuse`, `zizmor`.
   has, and pnpm skips the rest. Add a package by dropping a `package.json` into `apps/`.
 - `apps/api` is the TypeScript API (ESM, `type: "module"`). Its entrypoint `src/index.ts`
   exports `logHello()` as a placeholder; replace it with your public API.
-- The root `tsconfig.json` is the shared **strict** base every package `extends`: it holds
+- The root `tsconfig.base.json` is the shared **strict** base every package `extends`: it holds
   the strictness flags and module plumbing, plus `noEmit: true` so a stray `tsc` cannot
   emit. Each app keeps its own `module`/`moduleResolution` (`NodeNext` for the API,
   `bundler` for a Vite app), `types`, `lib`, `rootDir`/`outDir` and `include`/`exclude` —
@@ -185,7 +185,7 @@ binaries: `actionlint`, `dot`, `osv-scanner`, `reuse`, `zizmor`.
   (`@typescript-eslint/consistent-type-imports` with `prefer: "type-imports"`).
 - Import order runs builtin → external → internal → parent → sibling → index, grouped
   with newlines and alphabetized.
-- Prettier: semi, singleQuote, tabWidth 2, trailingComma es5, printWidth 100.
+- Formatting: oxfmt (via `vp fmt`), configured in `vite.config.ts` (`fmt`): semi, singleQuote, tabWidth 2, trailingComma es5, printWidth 100.
 - No abbreviations: `unicorn/name-replacements: ["error", { allowList: { i: true, j: true } }]`
   enforces verbose names (it replaced the deprecated `prevent-abbreviations`).
 - Naming convention (`@typescript-eslint/naming-convention: error`): `variable/parameter/method`
@@ -205,7 +205,7 @@ binaries: `actionlint`, `dot`, `osv-scanner`, `reuse`, `zizmor`.
 - `exactOptionalPropertyTypes: true`: you cannot assign `undefined` to an optional
   property.
 - `noUncheckedIndexedAccess: true`: indexed access returns `T | undefined`.
-- Root `tsconfig.json` is the shared strict base: it holds the strictness flags plus
+- Root `tsconfig.base.json` is the shared strict base: it holds the strictness flags plus
   `noEmit: true`, and every package `extends` it. Packages only declare what differs
   (`module`, `moduleResolution`, `types`, `lib`, `rootDir`/`outDir`, `include`/`exclude`) —
   never re-declare the strictness flags in a package.

@@ -1,0 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2026 vite-plus-bastion contributors
+
+SPDX-License-Identifier: MIT
+-->
+<template>
+  <router-view />
+</template>

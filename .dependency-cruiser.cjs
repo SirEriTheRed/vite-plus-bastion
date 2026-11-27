@@ -31,7 +31,7 @@ module.exports = {
         pathNot: [
           '(^|/)[.][^/]+[.](?:js|cjs|mjs|ts|cts|mts|json)$', // dot files
           '[.]d[.]ts$', // TypeScript declaration files
-          '(^|/)tsconfig[.]json$', // TypeScript config
+          '(^|/)tsconfig(?:\\.base)?[.]json$', // TypeScript config
           '(^|/)(?:babel|webpack)[.]config[.](?:js|cjs|mjs|ts|cts|mts|json)$', // other configs
           '(^|/)src/index[.]ts$', // entry point - allowed orphan
         ],
@@ -268,7 +268,7 @@ module.exports = {
     // dependency-cruiser's current working directory). When not provided
     // defaults to './tsconfig.json'.
     tsConfig: {
-      fileName: 'tsconfig.json',
+      fileName: 'tsconfig.base.json',
     },
 
     // Webpack configuration to use to get resolve options from.
