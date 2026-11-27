@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/SirEriTheRed/vite-plus-bastion/compare/v0.0.1...v0.1.0) (2026-11-27)
+
+### Bug Fixes
+
+- align web build with vite-plus and clean unused exports ([fb76074](https://github.com/SirEriTheRed/vite-plus-bastion/commit/fb76074ed029a44013c0c194c43d98c6315b738e))
+- **imports:** removed unused imports and regenerated the dependency graph ([cf3ab22](https://github.com/SirEriTheRed/vite-plus-bastion/commit/cf3ab22a6e6d6ad606fbded6fe6c699237e35730))
+- **package:** put the pwa:assets script before the tests scripts ([07d2268](https://github.com/SirEriTheRed/vite-plus-bastion/commit/07d22686a215b2635513df8d75731ce7f26d5dcd))
+- resolve cspell unknown words ([882f486](https://github.com/SirEriTheRed/vite-plus-bastion/commit/882f486cd173e50613293d9372b8accace95636b))
+- translate remaining French comments to English ([e733cbe](https://github.com/SirEriTheRed/vite-plus-bastion/commit/e733cbe9f3be7dab0b5d0a35637d7e81e4bc849f))
+- **web:** remove PWA manifest warnings (icon + screenshots) ([8e42e77](https://github.com/SirEriTheRed/vite-plus-bastion/commit/8e42e771240782fb761e0dc5db0134f1dfedfa89))
+
+### Features
+
+- **web:** add PWA assets and improve manifest config ([91eafc1](https://github.com/SirEriTheRed/vite-plus-bastion/commit/91eafc1244c568410843d6e51a8c747f75042b25))
+
 ## [1.1.3](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.2...v1.1.3) (2026-10-07)
 
 ### Bug Fixes
