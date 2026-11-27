@@ -43,7 +43,7 @@
     "@tailwindcss/vite": "^4.1.21",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitest/coverage-v8": "5.1.1",
-    "happy-dom": "^20.8.3",
+    "happy-dom": "^21.0.4",
     "tailwindcss": "^4.1.21",
     "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8001",
     "vite-plugin-pwa": "^2.0.0",
