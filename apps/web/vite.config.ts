@@ -23,7 +23,33 @@ export default defineConfig({
         background_color: '#0f172a',
         display: 'standalone',
         start_url: '/',
-        icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }],
+        icons: [
+          {
+            src: '/pwa/manifest-icon-192.maskable.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+          {
+            src: '/pwa/manifest-icon-512.maskable.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+        ],
+        screenshots: [
+          {
+            src: '/apple-splash-2732-2048.jpg',
+            sizes: '2732x2048',
+            type: 'image/jpeg',
+            form_factor: 'wide',
+          },
+          {
+            src: '/apple-splash-1170-2532.jpg',
+            sizes: '1170x2532',
+            type: 'image/jpeg',
+          },
+        ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],

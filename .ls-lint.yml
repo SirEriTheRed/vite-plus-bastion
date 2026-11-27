@@ -19,8 +19,13 @@ ignore:
   - '**/node_modules'
   - dist
   - '**/dist'
+  - '**/dist/**'
   - reports
+  - '**/reports'
+  - '**/reports/**'
   - coverage
+  - '**/coverage'
+  - '**/coverage/**'
   - .git
   - .github
   - .husky

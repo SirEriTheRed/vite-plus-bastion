@@ -26,6 +26,7 @@
     "cleanup": "rm -rf dist reports",
     "dev": "vp dev",
     "preview": "vp preview",
+    "pwa:assets": "npx pwa-asset-generator public/favicon.svg public/pwa/",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:coverage:watch": "vitest --coverage",
