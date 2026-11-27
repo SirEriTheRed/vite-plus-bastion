@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.2](https://github.com/SirEriTheRed/vite-plus-bastion/compare/v0.0.1...v0.0.2) (2026-11-27)
+
+### Bug Fixes
+
+- align web build with vite-plus and clean unused exports ([fb76074](https://github.com/SirEriTheRed/vite-plus-bastion/commit/fb76074ed029a44013c0c194c43d98c6315b738e))
+- resolve cspell unknown words ([882f486](https://github.com/SirEriTheRed/vite-plus-bastion/commit/882f486cd173e50613293d9372b8accace95636b))
+- translate remaining French comments to English ([e733cbe](https://github.com/SirEriTheRed/vite-plus-bastion/commit/e733cbe9f3be7dab0b5d0a35637d7e81e4bc849f))
+
 ## [1.1.3](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.2...v1.1.3) (2026-10-07)
 
 ### Bug Fixes
