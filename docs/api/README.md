@@ -1,8 +1,8 @@
-**@erithered/ts-bastion**
+**@vite-bastion/api**
 
 ---
 
-# @erithered/ts-bastion
+# @vite-bastion/api
 
 ## Functions
 

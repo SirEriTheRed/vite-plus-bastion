@@ -1,5 +1,4 @@
 {
-  "project": ["**/*.ts"],
   "ignoreDependencies": [
     "@secretlint/secretlint-rule-preset-recommend",
     "@semantic-release/github",

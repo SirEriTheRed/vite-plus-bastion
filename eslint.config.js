@@ -19,17 +19,17 @@ import vitest from "@vitest/eslint-plugin";
 export default tseslint.config(
   {
     ignores: [
-      "dist/",
-      "node_modules/",
-      "coverage/",
-      "reports/",
+      "**/dist/",
+      "**/node_modules/",
+      "**/coverage/",
+      "**/reports/",
       ".husky/",
       "docs/api/",
       "CHANGELOG.md",
       "**/*.cjs",
       "eslint.config.js",
       "lint-staged.config.js",
-      "vitest.config.ts",
+      "**/vitest.config.ts",
       "knip.json",
       "commitlint.config.cjs"
     ],
@@ -149,7 +149,7 @@ export default tseslint.config(
     files: ["**/*.test.ts", "**/*.spec.ts"],
     languageOptions: {
       parserOptions: {
-        project: "tsconfig.test.json",
+        project: ["apps/api/tsconfig.test.json"],
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -169,12 +169,15 @@ export default tseslint.config(
     },
   },
   {
-    files: ["**/*.test.ts", "**/*.spec.ts", "tests/**/*.ts"],
+    files: ["**/*.test.ts", "**/*.spec.ts", "**/tests/**/*.ts"],
     plugins: { vitest },
     settings: { vitest: { typecheck: true } },
     languageOptions: {
       globals: vitest.environments.env.globals,
-      parserOptions: { project: "tsconfig.test.json", tsconfigRootDir: import.meta.dirname },
+      parserOptions: {
+        project: ["apps/api/tsconfig.test.json"],
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
     rules: {
       ...Object.fromEntries(

@@ -1,14 +1,14 @@
-[**@erithered/ts-bastion**](../README.md)
+[**@vite-bastion/api**](../README.md)
 
 ---
 
-[@erithered/ts-bastion](../README.md) / logHello
+[@vite-bastion/api](../README.md) / logHello
 
 # Function: logHello()
 
 > **logHello**(): `string`
 
-Defined in: [index.ts:11](https://github.com/SirEriTheRed/ts-bastion/blob/main/src/index.ts#L11)
+Defined in: [index.ts:11](https://github.com/SirEriTheRed/vite-plus-bastion/blob/main/apps/api/src/index.ts#L11)
 
 Returns a greeting.
 

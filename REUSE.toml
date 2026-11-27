@@ -23,6 +23,7 @@ path = [
   ".npmrc",
   ".nvmrc",
   ".prettierignore",
+  "**/.gitkeep",
   "pnpm-lock.yaml",
 ]
 SPDX-FileCopyrightText = "2026 ts-bastion contributors"

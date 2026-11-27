@@ -52,60 +52,60 @@ SPDX-License-Identifier: MIT
 
 ## Commands
 
-| Command                          | Action                                                                                                                    |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm run build`                 | `tsc`, compiles `src/` → `dist/`                                                                                          |
-| `pnpm run clean`                 | `rm -rf dist`, removes build output                                                                                       |
-| `pnpm run cleanup`               | `rm -rf dist reports .nyc_output tmp temp .cache *.tsbuildinfo`                                                           |
-| `pnpm run check`                 | aggregate local gate: lint → lint:package → type-check(+tests) → format:check → editorconfig → ls-lint → knip → depcruise |
-| `pnpm run dev`                   | `tsc --watch`                                                                                                             |
-| `pnpm run type-check`            | `tsc --noEmit` (source only)                                                                                              |
-| `pnpm run type-check:tests`      | `tsc --noEmit -p tsconfig.test.json` (source + tests)                                                                     |
-| `pnpm run lint`                  | `eslint .` (flat config, strict type-checked)                                                                             |
-| `pnpm run lint:fix`              | `eslint . --fix`                                                                                                          |
-| `pnpm run lint:package`          | `npmPkgJsonLint .`, `package.json` convention lint                                                                        |
-| `pnpm run format`                | `prettier --write .`                                                                                                      |
-| `pnpm run format:check`          | `prettier --check .`                                                                                                      |
-| `pnpm run editorconfig`          | `editorconfig-checker`, whitespace, EOL, charset rules                                                                    |
-| `pnpm run editorconfig:docker`   | `docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker`                                                    |
-| `pnpm run lint:spell`            | `cspell lint "**/*.{ts,md,json}"`, spell-check source and docs                                                            |
-| `pnpm run ls-lint`               | `ls-lint`, filename/dir linter (`kebab-case`, `.ls-lint.yml`)                                                             |
-| `pnpm run package:sort`          | `sort-package-json`, normalizes `package.json` (`--check` in CI)                                                          |
-| `pnpm run licenses`              | `license-checker`, lists licenses of npm dependencies                                                                     |
-| `pnpm run secretlint`            | `secretlint "**/*"`, scans the repo for hardcoded secrets                                                                 |
-| `pnpm run secretlint:mask`       | `secretlint --maskSecrets "**/*"`, same, secrets masked in output                                                         |
-| `pnpm test`                      | `vitest run`, fast without coverage (80% thresholds via `pnpm run test:coverage`)                                         |
-| `pnpm run test:coverage`         | `vitest run --coverage` → `reports/coverage/` (80% thresholds)                                                            |
-| `pnpm run test:coverage:watch`   | `vitest --coverage`, watch with coverage                                                                                  |
-| `pnpm run test:watch`            | `vitest`, watch mode                                                                                                      |
-| `pnpm run test:ui`               | `vitest --ui`, browser UI                                                                                                 |
-| `pnpm run osv`                   | `osv-scanner scan source -r .`, blocking (exit 1 on vuln)                                                                 |
-| `pnpm run osv:html`              | `osv-scanner --format html --output-file reports/osv-report.html`, blocking + HTML                                        |
-| `pnpm run osv:html:force`        | same as `osv:html` but non-blocking (`\|\| true`) for local use                                                           |
-| `pnpm run sbom`                  | `pnpm sbom --sbom-format spdx --lockfile-only` → `reports/sbom/sbom.spdx.json` (GitHub)                                   |
-| `pnpm run sbom:cyclonedx`        | `pnpm sbom --sbom-format cyclonedx --lockfile-only` → `reports/sbom/sbom.cyclonedx.json`                                  |
-| `pnpm run sbom:all`              | `pnpm run sbom && pnpm run sbom:cyclonedx`                                                                                |
-| `pnpm run zizmor`                | `zizmor .`, GitHub Actions audit (requires `zizmor`); CI via `zizmorcore/zizmor-action@v0.6.4` → SARIF → Code scanning    |
-| `pnpm run zizmor:sarif`          | `zizmor --format sarif . > reports/zizmor.sarif`, local SARIF preview (non-blocking)                                      |
-| `pnpm run actionlint`            | `actionlint -color`, lints workflow files + shellcheck (blocking)                                                         |
-| `pnpm run actionlint:docker`     | `docker run --rm -v $(pwd):/repo --workdir /repo rhysd/actionlint:1.7.12 -color`, same sans Go via Docker                 |
-| `pnpm run codeql`                | `bash scripts/codeql-scan.sh`, runs CodeQL queries locally                                                                |
-| `pnpm run reuse`                 | `reuse lint`, REUSE/SPDX compliance (requires `reuse`); CI via `fsfe/reuse-action@v6` (blocking)                          |
-| `pnpm run reuse:annotate`        | `bash scripts/reuse-annotate.sh`, adds missing SPDX headers; review `git diff` before committing                          |
-| `pnpm run audit:signatures`      | `pnpm audit signatures`, strict Sigstore verify (exits non-zero on missing/invalid)                                       |
-| `pnpm run audit:signatures:warn` | `pnpm audit signatures \|\| true`, non-blocking wrapper for CI (always exit 0)                                            |
-| `pnpm run depcruise`             | `depcruise src --output-type err-long`, dependency rules (blocking)                                                       |
-| `pnpm run depcruise:html`        | `depcruise src --output-type err-html` → `reports/depcruiser/index.html`                                                  |
-| `pnpm run depcruise:graph`       | `depcruise src --output-type dot \| dot -T svg > dependency-graph.svg` (requires Graphviz)                                |
-| `pnpm run docs`                  | `rm -rf docs/api && typedoc` → `docs/api/*.md` (markdown, committed; hand-written guides live next to it in `docs/`)      |
-| `pnpm run docs:html`             | `typedoc --options typedoc.html.json` → `reports/docs/index.html` (HTML, gitignored)                                      |
-| `pnpm run docs:watch`            | `typedoc --watch`                                                                                                         |
-| `pnpm run knip`                  | `knip`, dead-code analysis                                                                                                |
-| `pnpm run analyze`               | alias for `knip`                                                                                                          |
-| `pnpm run commit`                | `cz`, commitizen interactive conventional-commit prompt                                                                   |
-| `pnpm run prepare`               | `husky`, installs git hooks (runs automatically on `pnpm install`)                                                        |
-| `pnpm run release`               | `semantic-release`                                                                                                        |
-| `pnpm run release:dry`           | `semantic-release --dry-run`                                                                                              |
+| Command                          | Action                                                                                                                                   |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm run build`                 | `pnpm -r build`, compiles each package's `src/` → `dist/`                                                                                |
+| `pnpm run clean`                 | `pnpm -r clean`, removes each package's build output                                                                                     |
+| `pnpm run cleanup`               | `rm -rf dist reports .nyc_output tmp temp .cache *.tsbuildinfo && pnpm -r cleanup`                                                       |
+| `pnpm run check`                 | aggregate local gate: lint → lint:package → type-check(+tests) → format:check → editorconfig → ls-lint → knip → depcruise                |
+| `pnpm run dev`                   | `pnpm -r --parallel dev`, every package's dev script concurrently                                                                        |
+| `pnpm run type-check`            | `pnpm -r type-check`, `tsc --noEmit` per package (source only)                                                                           |
+| `pnpm run type-check:tests`      | `pnpm -r type-check:tests`, `tsc --noEmit -p tsconfig.test.json` per package (source + tests)                                            |
+| `pnpm run lint`                  | `eslint .` (flat config, strict type-checked)                                                                                            |
+| `pnpm run lint:fix`              | `eslint . --fix`                                                                                                                         |
+| `pnpm run lint:package`          | `npmPkgJsonLint .`, `package.json` convention lint                                                                                       |
+| `pnpm run format`                | `prettier --write .`                                                                                                                     |
+| `pnpm run format:check`          | `prettier --check .`                                                                                                                     |
+| `pnpm run editorconfig`          | `editorconfig-checker`, whitespace, EOL, charset rules                                                                                   |
+| `pnpm run editorconfig:docker`   | `docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker`                                                                   |
+| `pnpm run lint:spell`            | `cspell lint "**/*.{ts,md,json}"`, spell-check source and docs                                                                           |
+| `pnpm run ls-lint`               | `ls-lint`, filename/dir linter (`kebab-case`, `.ls-lint.yml`)                                                                            |
+| `pnpm run package:sort`          | `sort-package-json`, normalizes `package.json` (`--check` in CI)                                                                         |
+| `pnpm run licenses`              | `license-checker`, lists licenses of npm dependencies                                                                                    |
+| `pnpm run secretlint`            | `secretlint "**/*"`, scans the repo for hardcoded secrets                                                                                |
+| `pnpm run secretlint:mask`       | `secretlint --maskSecrets "**/*"`, same, secrets masked in output                                                                        |
+| `pnpm test`                      | `pnpm -r test`, fast without coverage (80% thresholds via `pnpm run test:coverage`)                                                      |
+| `pnpm run test:coverage`         | `pnpm -r test:coverage` → `apps/api/reports/coverage/` (80% thresholds)                                                                  |
+| `pnpm run test:coverage:watch`   | `pnpm -r test:coverage:watch`, watch with coverage                                                                                       |
+| `pnpm run test:watch`            | `pnpm -r test:watch`, watch mode                                                                                                         |
+| `pnpm run test:ui`               | `pnpm -r test:ui`, browser UI                                                                                                            |
+| `pnpm run osv`                   | `osv-scanner scan source -r .`, blocking (exit 1 on vuln)                                                                                |
+| `pnpm run osv:html`              | `osv-scanner --format html --output-file reports/osv-report.html`, blocking + HTML                                                       |
+| `pnpm run osv:html:force`        | same as `osv:html` but non-blocking (`\|\| true`) for local use                                                                          |
+| `pnpm run sbom`                  | `pnpm sbom --sbom-format spdx --lockfile-only` → `reports/sbom/sbom.spdx.json` (GitHub)                                                  |
+| `pnpm run sbom:cyclonedx`        | `pnpm sbom --sbom-format cyclonedx --lockfile-only` → `reports/sbom/sbom.cyclonedx.json`                                                 |
+| `pnpm run sbom:all`              | `pnpm run sbom && pnpm run sbom:cyclonedx`                                                                                               |
+| `pnpm run zizmor`                | `zizmor .`, GitHub Actions audit (requires `zizmor`); CI via `zizmorcore/zizmor-action@v0.6.4` → SARIF → Code scanning                   |
+| `pnpm run zizmor:sarif`          | `zizmor --format sarif . > reports/zizmor.sarif`, local SARIF preview (non-blocking)                                                     |
+| `pnpm run actionlint`            | `actionlint -color`, lints workflow files + shellcheck (blocking)                                                                        |
+| `pnpm run actionlint:docker`     | `docker run --rm -v $(pwd):/repo --workdir /repo rhysd/actionlint:1.7.12 -color`, same sans Go via Docker                                |
+| `pnpm run codeql`                | `bash scripts/codeql-scan.sh`, runs CodeQL queries locally                                                                               |
+| `pnpm run reuse`                 | `reuse lint`, REUSE/SPDX compliance (requires `reuse`); CI via `fsfe/reuse-action@v6` (blocking)                                         |
+| `pnpm run reuse:annotate`        | `bash scripts/reuse-annotate.sh`, adds missing SPDX headers; review `git diff` before committing                                         |
+| `pnpm run audit:signatures`      | `pnpm audit signatures`, strict Sigstore verify (exits non-zero on missing/invalid)                                                      |
+| `pnpm run audit:signatures:warn` | `pnpm audit signatures \|\| true`, non-blocking wrapper for CI (always exit 0)                                                           |
+| `pnpm run depcruise`             | `depcruise apps packages --output-type err-long`, dependency rules (blocking)                                                            |
+| `pnpm run depcruise:html`        | `depcruise apps packages --output-type err-html` → `reports/depcruiser/index.html`                                                       |
+| `pnpm run depcruise:graph`       | `depcruise apps packages --include-only '^(apps\|packages)/' --output-type dot \| dot -T svg > dependency-graph.svg` (requires Graphviz) |
+| `pnpm run docs`                  | `rm -rf docs/api && typedoc` → `docs/api/*.md` (markdown, committed; hand-written guides live next to it in `docs/`)                     |
+| `pnpm run docs:html`             | `typedoc --options typedoc.html.json` → `reports/docs/index.html` (HTML, gitignored)                                                     |
+| `pnpm run docs:watch`            | `typedoc --watch`                                                                                                                        |
+| `pnpm run knip`                  | `knip`, dead-code analysis                                                                                                               |
+| `pnpm run analyze`               | alias for `knip`                                                                                                                         |
+| `pnpm run commit`                | `cz`, commitizen interactive conventional-commit prompt                                                                                  |
+| `pnpm run prepare`               | `husky`, installs git hooks (runs automatically on `pnpm install`)                                                                       |
+| `pnpm run release`               | `semantic-release`                                                                                                                       |
+| `pnpm run release:dry`           | `semantic-release --dry-run`                                                                                                             |
 
 ### External tools (not in `package.json`)
 
@@ -147,23 +147,32 @@ binaries: `actionlint`, `dot`, `osv-scanner`, `reuse`, `zizmor`.
 
 ## Architecture
 
-- Single-package ESM repo: a minimal template that fits any project type (API, CLI,
-  library, worker).
-- The entrypoint `src/index.ts` exports `logHello()` as a placeholder; replace it with
-  your public API.
-- No runtime dependencies; add only what your project needs.
+- pnpm workspace (`pnpm-workspace.yaml`): `apps/*` holds deployable apps (currently
+  `apps/api`, planned `apps/web`), `packages/*` holds shared libraries. The root
+  `package.json` is tooling + orchestration only and declares no runtime code.
+- Root scripts delegate with `pnpm -r <script>`: a package only defines the scripts it
+  has, and pnpm skips the rest. Add a package by dropping a `package.json` into `apps/`.
+- `apps/api` is the TypeScript API (ESM, `type: "module"`). Its entrypoint `src/index.ts`
+  exports `logHello()` as a placeholder; replace it with your public API.
+- The root `tsconfig.json` is the shared **strict** base every package `extends`: it holds
+  the strictness flags and module plumbing, plus `noEmit: true` so a stray `tsc` cannot
+  emit. Each app keeps its own `module`/`moduleResolution` (`NodeNext` for the API,
+  `bundler` for a Vite app), `types`, `lib`, `rootDir`/`outDir` and `include`/`exclude` —
+  `apps/api` sets `noEmit: false` for its build.
+- Each package declares its own dependencies; the root keeps only build/quality tooling.
 
 ## Orphaned / stale
 
-- `dist/` is build output (regenerate with `pnpm run build`, remove with `pnpm run clean`).
-  It goes stale after `src/` changes.
+- `dist/` is build output (regenerate with `pnpm run build`, remove with `pnpm run clean`);
+  it lives per package (`apps/api/dist/`) and goes stale after that package's `src/` changes.
 - `docs/api/` is generated by TypeDoc markdown (`pnpm run docs`); it is committed and must
   never be hand-edited. Hand-written guides live in `docs/` (see `docs/tooling.md`).
   `reports/docs/` is the HTML variant (`pnpm run docs:html`), gitignored.
-- `reports/` is the single gitignored folder for all HTML/sites not committed (coverage,
-  sbom, osv-report.html, docs html, depcruiser); `pnpm run cleanup` removes it.
-  `dependency-graph.svg` stays at the root (referenced in README), and `reports/sbom/`
-  contains `sbom.spdx.json` (GitHub) plus `sbom.cyclonedx.json`.
+- `reports/` is the gitignored folder for all HTML/sites not committed (coverage, sbom,
+  osv-report.html, docs html, depcruiser); `pnpm run cleanup` removes the root one and
+  each package's (`apps/api/reports/`, where coverage lands). `dependency-graph.svg` stays
+  at the root (referenced in README), and `reports/sbom/` contains `sbom.spdx.json`
+  (GitHub) plus `sbom.cyclonedx.json`.
 - `coverage/` is obsolete (it moved to `reports/coverage/`) but stays in `.gitignore` for
   compatibility.
 
@@ -196,8 +205,12 @@ binaries: `actionlint`, `dot`, `osv-scanner`, `reuse`, `zizmor`.
 - `exactOptionalPropertyTypes: true`: you cannot assign `undefined` to an optional
   property.
 - `noUncheckedIndexedAccess: true`: indexed access returns `T | undefined`.
-- Test files stay out of the main `tsconfig.json`; use `tsconfig.test.json` for test
-  type-checking (`pnpm run type-check:tests`).
+- Root `tsconfig.json` is the shared strict base: it holds the strictness flags plus
+  `noEmit: true`, and every package `extends` it. Packages only declare what differs
+  (`module`, `moduleResolution`, `types`, `lib`, `rootDir`/`outDir`, `include`/`exclude`) —
+  never re-declare the strictness flags in a package.
+- Test files stay out of each package's main `tsconfig.json`; use
+  `apps/api/tsconfig.test.json` for test type-checking (`pnpm run type-check:tests`).
 - `tsconfig.test.json` adds `vitest/globals` types and disables unused-variable errors
   for test convenience.
 
@@ -206,5 +219,6 @@ binaries: `actionlint`, `dot`, `osv-scanner`, `reuse`, `zizmor`.
 - Tests use Vitest with `globals: true` (describe/it/expect are available without
   imports).
 - Coverage thresholds are 80% for lines, functions, branches, and statements.
-- The smoke test `tests/hello.test.ts` covers `src/index.ts` (`logHello()`).
+- The smoke test `apps/api/tests/hello.test.ts` covers `apps/api/src/index.ts`
+  (`logHello()`).
 - Run the suite with `pnpm test` or `pnpm exec vitest run`.
