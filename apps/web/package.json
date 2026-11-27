@@ -32,7 +32,8 @@
     "test:ui": "vitest --ui",
     "test:watch": "vitest",
     "type-check": "vue-tsc --noEmit",
-    "type-check:tests": "vue-tsc --noEmit -p tsconfig.test.json"
+    "type-check:tests": "vue-tsc --noEmit -p tsconfig.test.json",
+    "pwa:assets": "npx pwa-asset-generator public/favicon.svg public/pwa/"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.11.0",
